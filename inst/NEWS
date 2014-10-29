@@ -1,3 +1,23 @@
+Changes in Version 0.8.40 (2014-10-28)
+--------------------------------------------------------
+
+NEW FEATURES
+
+* Improved formatting of citation given to CrossRef for increased chances of finding matches with `GetDOIs`
+function (h/t Erich Studerus)
+* Additional parsing of 'month' field to accomodate days and ranges of days and months.  Example bib entries
+that will be parsed correctly include `month = jun # "/" # jul`, `month = "20~" # jan`,
+`month = "20--25~" # dec`, `month =  "10~" # jan # "/" # feb` (request of Stephen Eglen)
+* Added argument 'group' to `ReadZotero` for specifying a groupID to query a group library instead of a
+user library (h/t Greg Blomquist).
+
+BUG FIXES
+
+* DOI's hyperlinks in Markdown format are now correct (h/t Stephen Eglen)
+* `print.BibEntry` with `BibOptions(style = "Biblatex")` fixed (h/t Artem Klevtsov)
+* `unlist.BibEntry` and `RelistBibEntry` now retains `@strings` and `mheader` and
+`mfooter` attributes (see ?BibEntry) if they are present
+
 Changes in Version 0.8.34 (2014-08-18)
 --------------------------------------------------------
 
@@ -8,7 +28,7 @@ a `BibEntry` object
 
 BUG FIXES
 
-* `ReadCrossRef` fixed to account for change to CrossRef API endpoint
+* `ReadCrossRef` fixed to account for change to CrossRef API endpoint. (h/t Carl Boettiger)
 * Abstracts returned by NCBI Entrez can be multiple parts.  This is now handled correctly and the complete
 abstract will be returned in the 'abstract' field. (h/t Erich Studerus)
 * DOI's were too naively extracted from NCBI Entrez results, resulting in some entries having 'doi' fields with
