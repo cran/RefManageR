@@ -19,6 +19,7 @@
 #' @author McLean, M. W. \email{mathew.w.mclean@@gmail.com}
 #' @method open BibEntry
 #' @export
+#' @importFrom utils browseURL
 #' @examples
 #' \dontrun{
 #' testbib <- ReadBib(system.file("REFERENCES.bib", package="bibtex"))
@@ -33,7 +34,7 @@ open.BibEntry <- function(con, entry = 1L, open.field = c("file", "url", "eprint
   if (missing(viewer))
     viewer <- getOption("browser")
   url <- GetURL(ref, open.field)
-  if (grepl("^file", url))
+  if (grepl("^file", url, useBytes = TRUE))
     viewer <- getOption("pdfviewer")
 
   if (!nzchar(url))
@@ -73,6 +74,6 @@ GetURL <- function(entry, flds, to.bib = FALSE){
     i <- i + 1L
   }
   if (!opened && to.bib)
-    url <- paste0("#bib-", gsub("[^_a-zA-Z0-9-]", "", attr(entry, "key")))
+    url <- paste0("#bib-", gsub("[^_a-zA-Z0-9-]", "", attr(entry, "key"), useBytes = TRUE))
   url
 }

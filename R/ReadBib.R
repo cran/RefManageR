@@ -9,13 +9,15 @@
 #' missing required fields?  \code{FALSE} means no checking is done, \dQuote{warn} means entry is added with an error.
 #' \dQuote{error} means the entry will not be added.  See \code{\link{BibOptions}}.
 #' @author McLean, M. W., based on code in \code{bibtex} package by Francois, R.
-## @importFrom bibtex do_read_bib
 #' @import bibtex
 #' @importFrom stringr str_trim
-#' @note Date fields are parsed using the locale specified by `Sys.getlocale("LC_TIME")`.  To
-#' read a bib file with character \sQuote{month} fields in a language other than the current
-#' locale, `Sys.setlocale` should be used to change \sQuote{LC_TIME}` to match the bib file before
-#' calling `ReadBib`.
+#' @note Date fields are parsed using the locale specified by \code{Sys.getlocale("LC_TIME")}.
+#' To read a bib file with character \sQuote{month} fields in a language other than the current
+#' locale, \code{Sys.setlocale} should be used to change \sQuote{LC_TIME}` to match the bib
+#' file before calling \code{ReadBib}.
+#'
+#' Keys will be made unique by calling \code{\link[base]{make.unique}} with
+#' \code{sep = ":"}.
 #' @seealso \code{\link[bibtex]{read.bib}} in package \code{bibtex}
 #' @export
 #' @examples
@@ -34,7 +36,7 @@ ReadBib <- function(file, .Encoding = "UTF-8",
   srcfile <- switch(.Encoding, unknown = srcfile(file), srcfile(file,
                                                                encoding = .Encoding))
   out <- .External("do_read_bib", file = file, encoding = .Encoding,
-                   srcfile = srcfile, PACKAGE = "bibtex")
+                    srcfile = srcfile, PACKAGE = "bibtex")
   ## out <- do_read_bib(file, encoding = .Encoding, srcfile)
   at <- attributes(out)
   if (typeof(out) != "integer")
@@ -42,6 +44,8 @@ ReadBib <- function(file, .Encoding = "UTF-8",
   else out <- list()
   preamble <- at[["preamble"]]
   out <- MakeCitationList(out, header, footer)
+  out <- MakeKeysUnique(out)
+  
   attr(out, "strings") <- at[["strings"]]
   .BibOptions$check.entries <- oldchk
   out
