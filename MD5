@@ -1,4 +1,4 @@
-18fdce2edcc36905efb85a4689bb08ca *DESCRIPTION
+342bf4c7dd26cac96ba317cf67022086 *DESCRIPTION
 64b1985c1871e15261dcf56b05769114 *LICENSE
 7a978f0cd64eabad28a1db2f4debad26 *NAMESPACE
 ed9135548bcf99178017728821dc200a *R/02BibOptions.R
@@ -20,7 +20,7 @@ b4121fa5b5a1ab10e178ce3015f52c84 *R/BibEntryReplaceBibEntry.R
 9e350fbefe151ed8feb3d936403a9757 *R/GetBibEntryWithDOI.R
 6f9f031bffd5686c9d156499f42b4f6b *R/GetDOIs.R
 99932802fd8084317292ce7d8d9d5a08 *R/NamesAssign.R
-01e45f771cd107a5097a7789873bf0b7 *R/ReadBib.R
+3b629e999801c80eab5c02370526d38b *R/ReadBib.R
 533efaa611b5362d181cf81e10b686f6 *R/ReadCrossRef.R
 9e170be2133584daf23b792be02f15c7 *R/ReadGS.R
 1a8a4320675372a66cc59d26ec5f5741 *R/ReadPDFs.R
@@ -50,7 +50,7 @@ b5e682eeda66450ecc73583039393969 *build/vignette.rds
 7e8248a419cd0226cd24eb8f781b1103 *inst/Bib/biblatexExamples.bib
 e49b90fed2245b5f6b1032029a20645f *inst/Bib/test.bib
 ad88c95b4110cbee5166fe07154447e9 *inst/CITATION
-cba85de458b3f20fdf36a22b2de1990c *inst/NEWS
+f9d8d82c6cc70b84cea115edd01183f2 *inst/NEWS
 589e6608c58f26fbf1cf0980b7002f07 *inst/Rhtml/TestAuthorYear.Rhtml
 640f01015a5a5a88230ed65c3101d9b8 *inst/Rhtml/TestHtml.Rhtml
 75c1dbda65a2545e23474ca5f835f21e *inst/Rmd/TestAlphabetic.Rmd
@@ -58,15 +58,15 @@ ea11d3083992cff1cf8ee53e9d7abdb0 *inst/Rmd/TestNumeric.Rmd
 7f51108747baa0725888dc0114a9871c *inst/Rmd/TestRmd.Rmd
 dba8b5731a18b077bc24799abf2ce5d4 *inst/doc/TestAlphabetic.R
 a3c4668c8e7d2d8f79f33a4902dd37d9 *inst/doc/TestAlphabetic.Rmd
-b15d1ac0bbc8de00ce95b5feb84ebe98 *inst/doc/TestAlphabetic.html
+9c605741059094e963c36e9081ebcad8 *inst/doc/TestAlphabetic.html
 b3ce8e09b88076b950189780d40b9bea *inst/doc/TestHtml.R
 722ac6d2d2042c51111d06d871967c31 *inst/doc/TestHtml.Rhtml
 979ec5b7e7babcb1eac5777714fafe0f *inst/doc/TestHtml.html
 20f3683181876759b8718129d92b8019 *inst/doc/TestRmd.R
 62cd97707a2615cb9b316c610d651172 *inst/doc/TestRmd.Rmd
-34cedb35ce9cfdede95737439bfa13b5 *inst/doc/TestRmd.html
+ccd42401ab4eef554ec8d373cb50a4a0 *inst/doc/TestRmd.html
 607499f0e4daa3fa61c197043ac3a737 *inst/doc/manual.Rnw
-be115d46434c901929c818fb5c2f56db *inst/doc/manual.pdf
+7ce9f3b607c5b9b87b60064a2f808eaf *inst/doc/manual.pdf
 a036f591c167d6877ff0f296735650da *man/BibEntry.Rd
 efff6f6a48faeb782b38c8de21b6400a *man/BibOptions.Rd
 eff5b6b3f338c3e58bb500debbe561ee *man/Cite.Rd
@@ -103,7 +103,7 @@ cf3d3e8eb206482d5db3fbd4b9e34b15 *man/sub-sub-.BibEntry.Rd
 eb4ac9579324976cdc0e2ee208f4ab86 *man/subset-.BibEntry.Rd
 0c40a47a41ab1d1003a106cb02db600c *man/toBiblatex.Rd
 4752aee5e57c4ea8656e1da27b012021 *man/unlist.BibEntry.Rd
-42fc1116582feb2c359076df6a4a5493 *tests/test-all.R
+74a4f52a5e021a63cf8d9c596de742fa *tests/test-all.R
 fff781f094caf81325887400d8b4e14f *tests/testthat/test-GS.R
 5387878dfac3dc02cfc0222d0a483b76 *tests/testthat/test-Read.R
 a66391ebecb16c09663397b1d3573c23 *tests/testthat/test-as.R
@@ -112,7 +112,7 @@ a66391ebecb16c09663397b1d3573c23 *tests/testthat/test-as.R
 056d73b73d6b6a37af8a9e23566a6cb0 *tests/testthat/test-crossref.R
 32a5d8b37e1f1afa62d42bffebb718d6 *tests/testthat/test-methods.R
 de8ac724a4f366ab3bbd86819ffafd5d *tests/testthat/test-pubmed.R
-74457070cfec3a01c25201890057f1e2 *tests/testthat/test-readPDF.R
+751c90392acf4926f49e495e9d667576 *tests/testthat/test-readPDF.R
 1c9b7df986b23e19aed2413fc679fc38 *tests/testthat/test-search.R
 eda02f80941215c5b1d0ba53236a2379 *tests/testthat/test-searchOR.R
 6cc54dd9e79fa3b5a719b2dc2abb9f9d *tests/testthat/test-sort.R

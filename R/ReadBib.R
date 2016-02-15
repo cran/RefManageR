@@ -36,7 +36,7 @@ ReadBib <- function(file, .Encoding = "UTF-8",
   srcfile <- switch(.Encoding, unknown = srcfile(file), srcfile(file,
                                                                encoding = .Encoding))
   out <- .External("do_read_bib", file = file, encoding = .Encoding,
-                    srcfile = srcfile, PACKAGE = "bibtex")
+                   srcfile = srcfile, PACKAGE = "bibtex")
   ## out <- do_read_bib(file, encoding = .Encoding, srcfile)
   at <- attributes(out)
   if (typeof(out) != "integer")
