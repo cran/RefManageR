@@ -170,12 +170,11 @@ ResolveBibLaTeXCrossRef <- function(chi, par){
 }
 
 #' @keywords internal
-#' @importFrom utils as.personList
 ArrangeAuthors <- function (x){
   rx <- "[[:space:]]+and[[:space:]]+"
   x <- gsub('[[:space:]]{2,}', ' ', x, useBytes = TRUE)
   authors <- lapply(strsplit(x, rx)[[1]], ArrangeSingleAuthor)
-  as.personList(authors)
+  do.call("c", authors)
 }
 
 #' @keywords internal
@@ -945,6 +944,7 @@ CreateBibKey <- function(ti, au, yr){
 
 #' @keywords internal
 MakeKeysUnique <- function(bib){
-    bib$key <- make.unique(names(bib), sep = ":")
+    if (length(bib))
+        bib$key <- make.unique(names(bib), sep = ":")
     bib
 }
