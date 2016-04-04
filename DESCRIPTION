@@ -1,6 +1,6 @@
 Package: RefManageR
-Version: 0.10.12
-Date: 2016-03-26
+Version: 0.10.13
+Date: 2016-04-04
 Title: Straightforward 'BibTeX' and 'BibLaTeX' Bibliography Management
 Authors@R: person(c("Mathew", "W."), "McLean", role = c("aut", "cre"),
     email = "mathew.w.mclean@gmail.com")
@@ -27,6 +27,6 @@ Depends: R (>= 3.0)
 VignetteBuilder: knitr
 BugReports: https://github.com/mwmclean/RefManageR/issues
 NeedsCompilation: no
-Packaged: 2016-03-31 18:57:27 UTC; mwm
+Packaged: 2016-04-04 02:56:15 UTC; mwm
 Repository: CRAN
-Date/Publication: 2016-03-31 22:27:35
+Date/Publication: 2016-04-04 08:36:55

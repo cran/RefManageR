@@ -1,4 +1,4 @@
-8bf1b605bf27c22072cd3fb2d2405549 *DESCRIPTION
+717842b411e8ee024d6124e5306cb0ee *DESCRIPTION
 64b1985c1871e15261dcf56b05769114 *LICENSE
 1c87926e01cfb64e88c8ef96d308ff2a *NAMESPACE
 ed9135548bcf99178017728821dc200a *R/02BibOptions.R
@@ -66,7 +66,7 @@ b3ce8e09b88076b950189780d40b9bea *inst/doc/TestHtml.R
 62cd97707a2615cb9b316c610d651172 *inst/doc/TestRmd.Rmd
 34cedb35ce9cfdede95737439bfa13b5 *inst/doc/TestRmd.html
 607499f0e4daa3fa61c197043ac3a737 *inst/doc/manual.Rnw
-f1bba968ad21427b687073ca14b1fbdb *inst/doc/manual.pdf
+c21d4a165a9f32e31d13d3462fc3494b *inst/doc/manual.pdf
 935dc08d38feaa59614ff6e9179d7d3d *man/BibEntry.Rd
 efff6f6a48faeb782b38c8de21b6400a *man/BibOptions.Rd
 eff5b6b3f338c3e58bb500debbe561ee *man/Cite.Rd
@@ -103,7 +103,7 @@ cf3d3e8eb206482d5db3fbd4b9e34b15 *man/sub-sub-.BibEntry.Rd
 eb4ac9579324976cdc0e2ee208f4ab86 *man/subset-.BibEntry.Rd
 0c40a47a41ab1d1003a106cb02db600c *man/toBiblatex.Rd
 4752aee5e57c4ea8656e1da27b012021 *man/unlist.BibEntry.Rd
-8e7778ffb2b3eda49bbaf02883e485f8 *tests/test-all.R
+74a4f52a5e021a63cf8d9c596de742fa *tests/test-all.R
 a2e4f3bb9c9485922f41ddd569b49773 *tests/testthat/test-BibEntry.R
 fff781f094caf81325887400d8b4e14f *tests/testthat/test-GS.R
 5387878dfac3dc02cfc0222d0a483b76 *tests/testthat/test-Read.R
