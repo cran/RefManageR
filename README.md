@@ -16,8 +16,8 @@ references can be created from locally stored `PDF` files using `Poppler`.  Incl
 functions for citing and generating a bibliography with hyperlinks for
 documents prepared with `RMarkdown` or `RHTML`.
 
-Please see the [vignette](http://cran.r-project.org/web/packages/RefManageR/vignettes/manual.pdf)
-for an introduction and [NEWS](https://github.com/mwmclean/RefManageR/blob/master/inst/NEWS)
+Please see the [vignette](https://cran.r-project.org/web/packages/RefManageR/vignettes/manual.pdf)
+for an introduction and [NEWS](https://github.com/mwmclean/RefManageR/blob/master/inst/NEWS.md)
 for the latest changes.
 
 Using the latest version from `Github` requires first installing the newest version of the `bibtex` package

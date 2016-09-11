@@ -1,9 +1,43 @@
+Changes in Version 0.11.0 (2016-09-10)
+--------------------------------------------------------
+
+NEW FEATURES
+
+* `ReadCrossRef` now uses the [newer CrossRef API](https://github.com/CrossRef/rest-api-doc/blob/master/rest_api.md) and gains arguments
+`filter` and `offset` to use with the new API; an
+additional argument `use.old.api` is added if the user wishes to use the old API
+(h/t Carl Boettiger)
+* `ReadCrossRef` now parses the results returned by CrossRef to
+create the `BibEntry` object when using the new API; for the old API (and hence, older
+versions of the package) the query only returns DOIs and `ReadCrossRef` would then
+use the DOIs to request the corresponding BibTeX entries from CrossRef (i.e. less
+HTTP requests when using the new API)
+
+BUG FIXES
+
+* Fix generation of entry keys when the word used from the title for key
+generation contains a non-ascii character (h/t Mark Johnson)
+* RefManageR will no longer hang due to a bug in `tools::latexToUtf8`
+([PR\#17138](https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17138)) that
+is occasionally encountered when that function processes an unknown
+macro (h/t Eric Bryant)
+* Entries with no title field can now be printed without error when
+`BibOptions()$check.entries` is *not* set to "error" (default is "error")
+
+Changes in Version 0.10.15 (2016-06-06)
+--------------------------------------------------------
+
+BUG FIXES
+
+* Removed unnecessary use of local/parent.frame; fixes execution with
+bytecode compiler (h/t Tomas Kalibera)
+
 Changes in Version 0.10.12 (2016-03-25)
 --------------------------------------------------------
 
 BUG FIXES
 
-* Fixed broken test involving `ReadPDFs` due to changed URL
+* Fixed broken test involving `ReadPDFs` due to changed URL (h/t Kurt Hornik)
 * `as.data.frame.BibEntry` works for length one BibEntry with multiple
 authors  (h/t Dale Steele)
 * Use `httr::GET` to fix `ReadGS`
