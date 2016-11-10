@@ -21,7 +21,7 @@
 #' @details Optional additional parameters to pass to the server include
 #' \itemize{
 #' \item \code{retstart} - index of the first retrieved ID that should be included in the results.
-#' \item \code{retmax} - maximum number of IDs the server will return.
+#' \item \code{retmax} - maximum number of IDs the server will return (default 20). 
 #' \item \code{field} - limits the query to search only the specified field (e.g. \dQuote{title}).
 #' \item \code{datetype} - type of date to use when limiting search by dates. E.g. \dQuote{mdat} for
 #' modification date or \dQuote{pdat} for publication date.
@@ -34,10 +34,10 @@
 #' See the Entrez documentation listed in the \emph{References}.
 #'
 #' The language of the entry will be returned in the field \dQuote{language} and the abstract will be returned in the field \dQuote{abstract}, if they are available.
-#' @references \url{http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch}
+#' @references \url{https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch}
 #' @family pubmed
 #' @examples
-#' if (interactive() && url.exists("http://eutils.ncbi.nlm.nih.gov/"))
+#' if (interactive() && url.exists("https://eutils.ncbi.nlm.nih.gov/"))
 #'   ReadPubMed(query = "raymond carroll measurement error", retmax = 5, mindate = 1990)
 ReadPubMed <- function(query, database = 'PubMed', ...){
   .params <- list(...)
@@ -49,7 +49,7 @@ ReadPubMed <- function(query, database = 'PubMed', ...){
     warning("Invalid .params specified and will be ignored")
     .parms <- .parms[-bad.ind]
   }
-  base.url <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+  base.url <- "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
 
   stopifnot(!missing(query))
 
@@ -88,14 +88,14 @@ ReadPubMed <- function(query, database = 'PubMed', ...){
 #' unless a collection title is present -- in which case the \code{bibtype} will be
 #' \dQuote{InBook} -- or there is no journal information returned for an article -- in
 #' which case the \code{bibtype} will be \dQuote{Misc}.
-#' @importFrom RCurl getForm
+#' @importFrom RCurl postForm
 #' @importFrom XML xmlParse getNodeSet
 #' @keywords database
 #' @export
-#' @references \url{http://www.ncbi.nlm.nih.gov/books/NBK25500/}
+#' @references \url{https://www.ncbi.nlm.nih.gov/books/NBK25500/}
 #' @family pubmed
 #' @examples
-#' if (interactive() && url.exists("http://eutils.ncbi.nlm.nih.gov/"))
+#' if (interactive() && url.exists("https://eutils.ncbi.nlm.nih.gov/"))
 #'   GetPubMedByID(c("11209037", "21245076"))
 GetPubMedByID <- function(id, db = 'pubmed', ...){
 
@@ -106,8 +106,8 @@ GetPubMedByID <- function(id, db = 'pubmed', ...){
   parms$retmode <- 'xml'
   parms$rettype <- 'medline'
 
-  base.url <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?"
-  temp <- getForm(base.url, .params = parms)
+  base.url <- "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?"
+  temp <- postForm(base.url, .params = parms)
   tdoc <- xmlParse(temp)
 
   # Note: directly using xpathApply on tdoc won't work if some results are missing certain fields
@@ -155,12 +155,12 @@ GetPubMedByID <- function(id, db = 'pubmed', ...){
 #' @return an object of class BibEntry.
 #' @importFrom RCurl getForm
 #' @importFrom XML xmlDoc xpathApply getNodeSet xmlParse
-#' @references \url{http://www.ncbi.nlm.nih.gov/books/NBK25500/}
+#' @references \url{https://www.ncbi.nlm.nih.gov/books/NBK25500/}
 #' @family pubmed
 #' @keywords database
 #' @export
 #' @examples
-#' if (interactive() && url.exists("http://eutils.ncbi.nlm.nih.gov/")){
+#' if (interactive() && url.exists("https://eutils.ncbi.nlm.nih.gov/")){
 #'   file.name <- system.file("Bib", "RJC.bib", package="RefManageR")
 #'   bib <- ReadBib(file.name)
 #'   bib <- LookupPubMedID(bib[[101:102]])
@@ -193,7 +193,7 @@ GetPubMedRelated <- function(id, database = 'pubmed', batch.mode = TRUE, max.res
   }
   id.len <- length(id)
 
-  base.url <- 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi'
+  base.url <- 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi'
 
   results <- try(getForm(base.url, .params = parms))
   if (inherits(results, 'try-error'))
@@ -450,7 +450,7 @@ ProcessPubMedBookResult <- function(article){
 #' @keywords database
 #' @export
 #' @examples
-#' if (interactive() && url.exists("http://eutils.ncbi.nlm.nih.gov/")){
+#' if (interactive() && url.exists("https://eutils.ncbi.nlm.nih.gov/")){
 #'   file.name <- system.file("Bib", "RJC.bib", package="RefManageR")
 #'   bib <- ReadBib(file.name)
 #'   LookupPubMedID(bib[[101:102]])
@@ -460,7 +460,7 @@ LookupPubMedID <- function(bib, index){
   if (missing(index))
     index <- seq_along(bib)
 
-  base.url <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/ecitmatch.cgi?db=pubmed&retmode=xml&bdata="
+  base.url <- "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/ecitmatch.cgi?db=pubmed&retmode=xml&bdata="
   cit.strings <- sapply(bib[index], MakeCitationString)
 
   .url <- paste0(base.url,

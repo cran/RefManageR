@@ -25,7 +25,7 @@ references using NCBI's E-Utilities, returning the results in a BibEntry object.
 Optional additional parameters to pass to the server include
 \itemize{
 \item \code{retstart} - index of the first retrieved ID that should be included in the results.
-\item \code{retmax} - maximum number of IDs the server will return.
+\item \code{retmax} - maximum number of IDs the server will return (default 20). 
 \item \code{field} - limits the query to search only the specified field (e.g. \dQuote{title}).
 \item \code{datetype} - type of date to use when limiting search by dates. E.g. \dQuote{mdat} for
 modification date or \dQuote{pdat} for publication date.
@@ -42,11 +42,11 @@ See the Entrez documentation listed in the \emph{References}.
 The language of the entry will be returned in the field \dQuote{language} and the abstract will be returned in the field \dQuote{abstract}, if they are available.
 }
 \examples{
-if (interactive() && url.exists("http://eutils.ncbi.nlm.nih.gov/"))
+if (interactive() && url.exists("https://eutils.ncbi.nlm.nih.gov/"))
   ReadPubMed(query = "raymond carroll measurement error", retmax = 5, mindate = 1990)
 }
 \references{
-\url{http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch}
+\url{https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch}
 }
 \seealso{
 Other pubmed: \code{\link{GetDOIs}},

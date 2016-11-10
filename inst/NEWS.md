@@ -1,3 +1,28 @@
+Changes in Version 0.13.0 (2016-11-09)
+--------------------------------------------------------
+
+BUG FIXES
+
+* Updated calls to NCBI Entrez for functions `ReadPubMed`, `GetPubMedByID`, etc.
+to use https as now required by NCBI (h/t Dale Steele and Anthony Crane)
+* Change reference to www.omegahat.org to www.omegahat.net (h/t Kurt Hornik)
+* Documentation for `ReadPubMed` is updated to reflect that the default number of
+entries returned (controlled by the argument `retmax`)  is 20 (h/t Dale Steele)
+
+Changes in Version 0.12.0 (2016-09-30)
+--------------------------------------------------------
+
+NEW FEATURES
+
+* Some `LaTeX` macros unknown to R are now defined as macros in the package, and will
+be parsed using `macros` arg in `tools::parse_Rd` (assuming `getRversion() >= "3.2.0"`)
+
+BUG FIXES
+
+* Parse `LaTeX` macro `\textquotesingle` in author names (h/t Bill Denney)
+* Avoid "Request-URI too large" errors in GetPubMedByID if requesting a large number
+of IDs (h/t Maurits Evers)
+
 Changes in Version 0.11.0 (2016-09-10)
 --------------------------------------------------------
 
