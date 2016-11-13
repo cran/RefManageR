@@ -1,9 +1,9 @@
-9677fd1cef6cd5f9849b147076ce7b77 *DESCRIPTION
+f46c080e0ad1dd6025c6596f2c7a050f *DESCRIPTION
 64b1985c1871e15261dcf56b05769114 *LICENSE
-8dcc496e27c39a84d9bb8e1641a528de *NAMESPACE
+7a8974d1ec146acbc114450ab5b502a2 *NAMESPACE
 0dcb61b5c1ffa131ebb866f0cadd4dd3 *R/02BibOptions.R
 dfa67c0f8c7125f361af349adcd977ae *R/03BibLaTeX_entry_field_db.R
-997ad73ccb80e3335d023c7985bc2648 *R/04InternalFunctions.R
+3abf0f85c46f7fe303f219987a4e93db *R/04InternalFunctions.R
 cc64b8348f2946a584f202c2b0c07ad4 *R/05makeBibLatex.R
 511cee76ff08e87af1e34ac31fd3738a *R/06BibEntry.R
 2b3b44014d233ef645b7358f9716ed4c *R/07makeBibLatexAuthoryear.R
@@ -32,7 +32,7 @@ de3142bd96f6ba1d9c2de8e5751e82dc *R/RefManageR-package.R
 4f7efa01a62cad47417599c3098026a0 *R/UpdateFieldName.R
 01f2c378fa47b410bbc00f1e5a05d738 *R/WriteBib.R
 7cb594f605d971aa45221da310f27c7b *R/asdataframe.R
-4032fc1d8569bcf8524cd4e32a30bf5d *R/format.R
+9206f76f605646e512ec1a1b32c79912 *R/format.R
 a98c4fd4a46c2578deb290ea90795e28 *R/head.BibEntry.R
 7e95069e1fdf5716a1c5c8c725ce601c *R/levels.R
 140c5fd7a3ba7bcc4391e82c99b0ac97 *R/names.R
@@ -66,7 +66,7 @@ b3ce8e09b88076b950189780d40b9bea *inst/doc/TestHtml.R
 62cd97707a2615cb9b316c610d651172 *inst/doc/TestRmd.Rmd
 ccd42401ab4eef554ec8d373cb50a4a0 *inst/doc/TestRmd.html
 607499f0e4daa3fa61c197043ac3a737 *inst/doc/manual.Rnw
-a46492716215fa654acc98a139ec1f9e *inst/doc/manual.pdf
+62db774233f137a3475970f287a22ae8 *inst/doc/manual.pdf
 cdafa0dc1109457e26d61d9145f41c0c *man/BibEntry.Rd
 1d121ea7d2fe672850ad38a933fb51b3 *man/BibOptions.Rd
 ce17582937410fa62e4b11782d85027a *man/Cite.Rd
