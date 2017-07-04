@@ -18,8 +18,8 @@ See the Entrez documentation listed in the \emph{References}.}
 a BibEntry object.
 }
 \description{
-Uses NCBI's E-Utilities to retrieve bibliographic information given a vector of PubMed ID's and returns
-the results as a BibEntry object.
+Uses NCBI's E-Utilities to retrieve bibliographic information given a
+vector of PubMed ID's and returns the results as a BibEntry object.
 }
 \note{
 Returned entries will have \code{bibtype} \dQuote{Article} or \dQuote{Book},
@@ -28,7 +28,7 @@ unless a collection title is present -- in which case the \code{bibtype} will be
 which case the \code{bibtype} will be \dQuote{Misc}.
 }
 \examples{
-if (interactive() && url.exists("https://eutils.ncbi.nlm.nih.gov/"))
+if (interactive() && !http_error("https://eutils.ncbi.nlm.nih.gov/"))
   GetPubMedByID(c("11209037", "21245076"))
 }
 \references{
@@ -41,4 +41,3 @@ Other pubmed: \code{\link{GetDOIs}},
   \code{\link{ReadPubMed}}
 }
 \keyword{database}
-

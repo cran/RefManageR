@@ -3,6 +3,7 @@
 \name{head.BibEntry}
 \alias{head.BibEntry}
 \alias{tail.BibEntry}
+\alias{tail.BibEntry}
 \title{Return the first or last part of a BibEntry object}
 \usage{
 \method{head}{BibEntry}(x, n = 6L, suppress.messages = TRUE, ...)
@@ -29,7 +30,6 @@ Prints the first or last entries of a BibEntry object (via \code{\link{message}}
 }
 \details{
 If \code{suppress.messages} is \code{FALSE}, the head/tail entries are output to the console along
-  with some additional formatting for the \sQuote{bibtype} and \sQuote{key}, in addition to invisibling
-  returning the entries.
+  with some additional formatting for the \sQuote{bibtype} and \sQuote{key}, in addition to
+invisibly returning the entries.
 }
-

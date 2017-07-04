@@ -1,6 +1,5 @@
 Package: RefManageR
-Version: 0.13.1
-Date: 2016-11-14
+Version: 0.14.12
 Title: Straightforward 'BibTeX' and 'BibLaTeX' Bibliography Management
 Authors@R: person(c("Mathew", "W."), "McLean", role = c("aut", "cre"),
     email = "mathew.w.mclean@gmail.com")
@@ -19,15 +18,16 @@ Description: Provides tools for importing and working with bibliographic
     and generating a bibliography with hyperlinks for documents prepared with
     'RMarkdown' or 'RHTML'.
 License: GPL-2 | GPL-3 | BSD_3_clause + file LICENSE
-Imports: XML, RCurl, RJSONIO, utils, plyr, tools, httr, bibtex,
+Imports: xml2, jsonlite, utils, plyr, tools, httr, bibtex (>= 0.4.1),
         lubridate (>= 1.5.0), stringr, methods
 Suggests: knitr, testthat
 Encoding: UTF-8
 Depends: R (>= 3.0)
 VignetteBuilder: knitr
 BugReports: https://github.com/mwmclean/RefManageR/issues
-RoxygenNote: 5.0.1
+URL: https://github.com/mwmclean/RefManageR/
+RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2016-11-13 18:21:52 UTC; root
+Packaged: 2017-07-04 09:44:16 UTC; root
 Repository: CRAN
-Date/Publication: 2016-11-13 22:57:41
+Date/Publication: 2017-07-04 10:48:50 UTC

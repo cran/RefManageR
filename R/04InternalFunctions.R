@@ -1,33 +1,39 @@
 #' @keywords internal
-.BibEntryCheckBibEntry1 <- function (x, force = FALSE, check = .BibOptions$check.entries) {
+#' @noRd
+.BibEntryCheckBibEntry1 <- function (x, force = FALSE,
+                                     check = .BibOptions$check.entries){
   if (identical(check, FALSE))
     return(NULL)
   fields <- names(x)
-  if (!force && (!.is_not_nonempty_text(x$crossref) || !.is_not_nonempty_text(x$xdata)))
+  if (!force && (!.is_not_nonempty_text(x$crossref) ||
+                 !.is_not_nonempty_text(x$xdata)))
     return(NULL)
   bibtype <- attr(x, "bibtype")
   rfields <- strsplit(BibLaTeX_entry_field_db[[bibtype]],
                       "|", fixed = TRUE)
   if (length(rfields) > 0L) {
-    ok <- sapply(rfields, function(f) any(f %in% fields))
+    ok <- vapply(rfields, function(f) any(f %in% fields), FALSE)
     if (any(!ok)){
       if (check == 'warn'){
-        warning(sprintf(ngettext(sum(!ok), "A bibentry of bibtype %s has to specify the field: %s",
-                              "A bibentry of bibtype %s has to specify the fields: %s"),
-                     sQuote(bibtype), paste(rfields[!ok], collapse = ", ")),
-             domain = NA)
+          warning(sprintf(ngettext(sum(!ok),
+                      "A bibentry of bibtype %s has to specify the field: %s",
+                      "A bibentry of bibtype %s has to specify the fields: %s"),
+                      sQuote(bibtype), paste(rfields[!ok], collapse = ", ")),
+                  domain = NA)
         return(NULL)
       }else{
-        stop(sprintf(ngettext(sum(!ok), "A bibentry of bibtype %s has to specify the field: %s",
-                              "A bibentry of bibtype %s has to specify the fields: %s"),
+          stop(sprintf(ngettext(sum(!ok),
+                     "A bibentry of bibtype %s has to specify the field: %s",
+                     "A bibentry of bibtype %s has to specify the fields: %s"),
                      sQuote(bibtype), paste(rfields[!ok], collapse = ", ")),
-             domain = NA)
+               domain = NA)
       }
     }
   }
 }
 
 #' @keywords internal
+#' @noRd
 .BibEntry_match_format_style <- function (style){
     ind <- pmatch(tolower(style), tolower(bibentry_format_styles),
         nomatch = 0L)
@@ -39,6 +45,7 @@
 }
 
 #' @keywords internal
+#' @noRd
 .BibEntry_expand_crossrefs <- function (x, more = list(), to.bibtex = FALSE){
   if (!length(x))
     return(NULL)
@@ -50,7 +57,7 @@
   xrefs <- lapply(x, '[[', "xdata")
   px <- which(vapply(xrefs, length, 0L) > 0L)
   if (length(px)){
-    xk <- sapply(xrefs[px], strsplit, ',')
+    xk <- lapply(xrefs[px], strsplit, ",")
     # xdata field can be comma-separated list of keys
     x[px] <- Map(function(entry, xdat.keys, full.bib){
       pos <- match(xdat.keys, .BibEntry_get_key(full.bib))
@@ -77,12 +84,15 @@
 
     if (to.bibtex){
       x[pc[ok]] <- lapply(x[pc[ok]], function(bib){
-        if (attr(bib, 'bibtype') %in% c("InBook", "InCollection", "InProceedings") && is.null(bib$subtitle))
+          if (attr(bib, 'bibtype') %in% c("InBook", "InCollection",
+                                          "InProceedings") &&
+                                           is.null(bib$subtitle))
           bib$subtitle <- ''
         bib
       })
       x[pk[ok]] <- lapply(x[pk[ok]], function(bib){
-        if (attr(bib, 'bibtype') %in% c("Book", "Proceedings") && is.null(bib$subtitle))
+          if (attr(bib, 'bibtype') %in% c("Book", "Proceedings") &&
+                                            is.null(bib$subtitle))
           bib$booktitle <- bib$title
         bib
       })
@@ -96,6 +106,7 @@
 }
 
 #' @keywords internal
+#' @noRd
 ResolveBibLaTeXCrossRef <- function(chi, par){
   add <- setdiff(names(par), names(chi))
 
@@ -103,49 +114,60 @@ ResolveBibLaTeXCrossRef <- function(chi, par){
   # ensure child with no subtitle, titleaddon don't inherit them incorrectly
   chi.type <- tolower(attr(chi, "bibtype"))
   par.type <- tolower(attr(par, "bibtype"))
-  if (!is.na(match(chi.type, c("incollection", "suppcollection", "collection", "reference", "inreference",
-                               "inbook", "suppbook", "bookinbook", "book", "inproceedings", "proceedings",
-                               "article", "suppperiodical"))))
+  if (!is.na(match(chi.type, c("incollection", "suppcollection", "collection",
+                               "reference", "inreference", "inbook", "suppbook",
+                               "bookinbook", "book", "inproceedings",
+                               "proceedings", "article", "suppperiodical"))))
     add <- add[!add %in% c("subtitle", "titleaddon")]
   chi[add] <- par[add]
   if (any(add %in% .BibEntryDateField))
     attr(chi, 'dateobj') <- ProcessDates(chi)
-  # special handling for bookauthor, maintitle, mainsubtitle, maintitleaddon, booktitle, booktitleaddon,
-  #  booksubtitle, journaltitle, journalsubtitle; see Appendix B of biblatex manual
+  ## special handling for bookauthor, maintitle, mainsubtitle, maintitleaddon,
+  ## booktitle, booktitleaddon, booksubtitle, journaltitle, journalsubtitle;
+  ## see Appendix B of biblatex manual
   if (!is.na(match(par.type, c('mvbook', 'book'))) &&
-        !is.na(match(chi.type, c('inbook', 'bookinbook', 'suppbook'))) && is.null(chi$bookauthor))
+      !is.na(match(chi.type, c('inbook', 'bookinbook', 'suppbook'))) &&
+      is.null(chi$bookauthor))
     chi$bookauthor <- par$author
 
-  if (par.type == 'mvbook' && !is.na(match(chi.type, c('book', 'inbook', 'bookinbook', 'suppbook')))){
+  if (par.type == 'mvbook' && !is.na(match(chi.type, c('book', 'inbook',
+                                                       'bookinbook',
+                                                       'suppbook')))){
     if (is.null(chi$maintitle))
       chi$maintitle <- par$title
     if (is.null(chi$mainsubtitle))
       chi$mainsubtitle <- par$subtitle
     if (is.null(chi$maintitleaddon))
       chi$maintitleaddon <- par$titleaddon
-  }else if (par.type == 'mvcollection' && !is.na(match(chi.type, c('collection', 'reference', 'incollection')))){
+  }else if (par.type == 'mvcollection' &&
+            !is.na(match(chi.type,
+                         c('collection', 'reference', 'incollection')))){
     if (is.null(chi$maintitle))
       chi$maintitle <- par$title
-  }else if (par.type == 'mvreference' && !is.na(match(chi.type, c('inreference', 'suppcollection')))){
+  }else if (par.type == 'mvreference' &&
+            !is.na(match(chi.type, c('inreference', 'suppcollection')))){
     if (is.null(chi$mainsubtitle))
       chi$mainsubtitle <- par$subtitle
     if (is.null(chi$maintitleaddon))
       chi$maintitleaddon <- par$titleaddon
-  }else if (par.type == 'mvproceedings' && !is.na(match(chi.type, c('proceedings', 'inproceedings')))){
+  }else if (par.type == 'mvproceedings' &&
+            !is.na(match(chi.type, c('proceedings', 'inproceedings')))){
     if (is.null(chi$maintitle))
       chi$maintitle <- par$title
     if (is.null(chi$mainsubtitle))
       chi$mainsubtitle <- par$subtitle
     if (is.null(chi$maintitleaddon))
       chi$maintitleaddon <- par$titleaddon
-  }else if (par.type == 'book' && !is.na(match(chi.type, c('inbook', 'bookinbook', 'suppbook')))){
+  }else if (par.type == 'book' &&
+            !is.na(match(chi.type, c('inbook', 'bookinbook', 'suppbook')))){
     if (is.null(chi$booktitle))
       chi$booktitle <- par$title
     if (is.null(chi$booksubtitle))
       chi$booksubtitle <- par$subtitle
     if (is.null(chi$booktitleaddon))
       chi$booktitleaddon <- par$titleaddon
-  }else if (par.type == 'collection' && !is.na(match(chi.type, c('incollection', 'inreference')))){
+  }else if (par.type == 'collection' &&
+            !is.na(match(chi.type, c('incollection', 'inreference')))){
     if (is.null(chi$booktitle))
       chi$booktitle <- par$title
   }else if (par.type == 'reference' && chi.type == 'suppcollection'){
@@ -160,7 +182,8 @@ ResolveBibLaTeXCrossRef <- function(chi, par){
       chi$booksubtitle <- par$subtitle
     if (is.null(chi$booktitleaddon))
       chi$booktitleaddon <- par$titleaddon
-  }else if (par.type == 'periodical' && !is.na(match(chi.type, c('article', 'suppperiodical')))){
+  }else if (par.type == 'periodical' &&
+            !is.na(match(chi.type, c('article', 'suppperiodical')))){
     if (is.null(chi$journaltitle) && is.null(chi$journal))
       chi$journaltitle <- par$title
     if (is.null(chi$journalsubtitle))
@@ -170,6 +193,7 @@ ResolveBibLaTeXCrossRef <- function(chi, par){
 }
 
 #' @keywords internal
+#' @noRd
 ArrangeAuthors <- function (x){
   rx <- "[[:space:]]+and[[:space:]]+"
   x <- gsub('[[:space:]]{2,}', ' ', x, useBytes = TRUE)
@@ -179,6 +203,7 @@ ArrangeAuthors <- function (x){
 
 #' @keywords internal
 #' @importFrom utils person
+#' @noRd
 ArrangeSingleAuthor <- function(y){
   ## To ensure names are parsed as accurately as possible,
   ##  LaTeX macros are removed with gsub in calls to cleanupLatexSearch
@@ -199,7 +224,8 @@ ArrangeSingleAuthor <- function(y){
       y <- deparseLatex(tmp)
     }
   }
-  parts <- unlist(strsplit(y, ", ?(?![^{}]*})", perl = TRUE))  # split on commas not in braces
+  ## split on commas not in braces  
+  parts <- unlist(strsplit(y, ", ?(?![^{}]*})", perl = TRUE))  
   len.parts <- length(parts)
   if (len.parts == 1L){
     #     parts <- "{Barnes} {and} {Noble,} {Inc.}"
@@ -218,8 +244,9 @@ ArrangeSingleAuthor <- function(y){
       last <- paste0(s[(i+2):(length(s)-1)], collapse = '')
       first <- NULL
       if (i > 0)
-        first <- paste0(s[seq_len(i-1)], collapse = '')
-      person(UnlistSplitClean(first), cleanupLatexSearch(last))  # Mathew {McLean IX}
+          first <- paste0(s[seq_len(i-1)], collapse = '')
+      ## Mathew {McLean IX}
+      person(UnlistSplitClean(first), cleanupLatexSearch(last))  
     }else{
       vonrx <- "(^|[[:space:]])([[:lower:]+[:space:]?]+)[[:space:]]"
       m <- regexec(vonrx, parts, useBytes = TRUE)
@@ -229,8 +256,9 @@ ArrangeSingleAuthor <- function(y){
         if (length(name) == 1L){  # von Bommel
           person(family=c(cleanupLatexSearch(von), cleanupLatexSearch(name)))
         }else{  # Mark von Bommel
-            person(given = UnlistSplitClean(name[1L]), family = c(cleanupLatexSearch(von),
-                                                           cleanupLatexSearch(name[2L])))
+            person(given = UnlistSplitClean(name[1L]),
+                   family = c(cleanupLatexSearch(von),
+                              cleanupLatexSearch(name[2L])))
         }
       }else{  # George Bernard Shaw
         name <- UnlistSplitClean(parts)
@@ -252,9 +280,10 @@ ArrangeSingleAuthor <- function(y){
       if (is.na(von)){  # e.g. Smith, John Paul
         person(UnlistSplitClean(parts[2L]), cleanupLatexSearch(parts[1L]))
       }else{  # e.g. de la Soul, John
-          person(UnlistSplitClean(parts[2L]), c(cleanupLatexSearch(von),
-                                                cleanupLatexSearch(sub(vonrx, '', parts[1L],
-                                                                 useBytes = TRUE))))
+          person(UnlistSplitClean(parts[2L]),
+                 c(cleanupLatexSearch(von),
+                   cleanupLatexSearch(sub(vonrx, '', parts[1L],
+                                          useBytes = TRUE))))
       }
     }
   }else if (len.parts == 3L){
@@ -266,8 +295,8 @@ ArrangeSingleAuthor <- function(y){
                                               cleanupLatexSearch(parts[2L])))
     }else{  # e.g. des White, Jr., Walter
       person(UnlistSplitClean(parts[3L]),
-             c(cleanupLatexSearch(von), cleanupLatexSearch(sub(vonrx, '', parts[1L],
-                                                               useBytes = TRUE)),
+             c(cleanupLatexSearch(von),
+               cleanupLatexSearch(sub(vonrx, '', parts[1L], useBytes = TRUE)),
                cleanupLatexSearch(parts[2L])))
     }
   }else{
@@ -276,12 +305,14 @@ ArrangeSingleAuthor <- function(y){
 }
 
 #' @keywords internal
+#' @noRd
 UnlistSplitClean <- function(s){
   ## cleanupLatex(str_trim(s))
   unlist(strsplit(gsub("[{}]", "", str_trim(s), useBytes = TRUE), " "))
 }
 
 #' @keywords internal
+#' @noRd
 cleanupLatex <- function (x){
   if (!length(x))
     return(x)
@@ -294,6 +325,7 @@ cleanupLatex <- function (x){
     x <- gsub('\\\\hyphen', '-', x, useBytes = TRUE)
     x <- gsub("\\\\textquotesingle", "'", x, useBytes = TRUE)
   }
+  x <- gsub("\\\\&", "&", x, useBytes = TRUE)
 
   latex <- try(tools::parseLatex(x), silent = TRUE)
   if (inherits(latex, "try-error")) {
@@ -326,6 +358,7 @@ cleanupLatex <- function (x){
 }
 
 #' @keywords internal
+#' @noRd
 MakeCitationList <- function( x, header, footer){
     rval <- list()
     for (i in seq_along(x)){
@@ -337,11 +370,14 @@ MakeCitationList <- function( x, header, footer){
 }
 
 #' @keywords internal
+#' @noRd
 .is_not_nonempty_text <- function(x){
-  is.null(x) || any(is.na(x)) || all(grepl("^[[:space:]]*$", x, useBytes = TRUE))
+    is.null(x) || any(is.na(x)) || all(grepl("^[[:space:]]*$", x,
+                                             useBytes = TRUE))
 }
 
 #' @keywords internal
+#' @noRd
 .listify <- function (x){
   if (inherits(x, "list"))
     x
@@ -349,6 +385,7 @@ MakeCitationList <- function( x, header, footer){
 }
 
 #' @keywords internal
+#' @noRd
 .format_BibEntry_as_R_code <- function(x, collapse = FALSE){
   if (!length(x))
     return("bibentry()")
@@ -360,7 +397,7 @@ MakeCitationList <- function( x, header, footer){
   .format_call_RR <- function(cname, cargs){
     cargs <- as.list(cargs)
     n <- length(cargs)
-    lens <- sapply(cargs, length)
+    lens <- vapply(cargs, length, 0L)
     sums <- cumsum(lens)
     starters <- c(sprintf("%s(", cname), rep.int(.blanks(nchar(cname) +
                                                            1L), sums[n] - 1L))
@@ -370,8 +407,8 @@ MakeCitationList <- function( x, header, footer){
   }
   .format_person_as_R_code <- function(x){
     s <- lapply(unclass(x), function(e){
-      e <- e[!sapply(e, is.null)]
-      cargs <- sprintf("%s = %s", names(e), sapply(e, deparse))
+      e <- e[!vapply(e, is.null, FALSE)]
+      cargs <- sprintf("%s = %s", names(e), vapply(e, deparse, ""))
       .format_call_RR("person", cargs)
     })
     if (length(s) > 1L)
@@ -393,21 +430,22 @@ MakeCitationList <- function( x, header, footer){
   }
   s <- lapply(unclass(x), function(e){
     a <- Filter(length, attributes(e)[anames])
-    e <- e[!sapply(e, is.null)]
+    e <- e[!vapply(e, is.null, FALSE)]
     ind <- !is.na(match(names(e), c(anames, manames, "other")))
     if (any(ind)) {
-      other <- paste(names(e[ind]), sapply(e[ind], f),
+      other <- paste(names(e[ind]), vapply(e[ind], f, ""),
                      sep = " = ")
-      other <- Map(g, names(e[ind]), sapply(e[ind], f))
+      other <- Map(g, names(e[ind]), vapply(e[ind], f, ""))
       other <- .format_call_RR("list", other)
       e <- e[!ind]
     }
     else {
       other <- NULL
     }
-    c(Map(g, names(a), sapply(a, deparse)), Map(g, names(e),
-                                                sapply(e, f)), if (length(other)) list(g("other",
-                                                                                         other)))
+    c(Map(g, names(a), vapply(a, deparse, "")), Map(g, names(e),
+                                                    lapply(e, f)),
+      if (length(other))
+          list(g("other", other)))
   })
   if (!is.null(mheader <- attr(x, "mheader")))
     s[[1L]] <- c(s[[1L]], paste("mheader = ", deparse(mheader)))
@@ -426,14 +464,14 @@ MakeCitationList <- function( x, header, footer){
   x$dateobj <- NULL
   anames <- bibentry_attribute_names
   manames <- c("mheader", "mfooter")
-  .clean <- MakeBibLaTeX()$cleanupLatex
-  .collapse <- MakeBibLaTeX()$collapse
+  .clean <- cleanupLatex
+  .collapse <- GetFormatFunctions("text", I)$collapse
   .blanks <- function(n) paste(rep.int(" ", n), collapse = "")
   .format_call_RR <- function(cname, cargs){
     cargs <- as.list(cargs)
     # cargs <- lapply(cargs, function(x) collapse(clean(x)))
     n <- length(cargs)
-    lens <- sapply(cargs, length)
+    lens <- vapply(cargs, length, 0L)
     sums <- cumsum(lens)
     starters <- c(sprintf("%s", cname), rep.int(.blanks(nchar(cname) +
                                                            1L), sums[n] - 1L))
@@ -444,8 +482,8 @@ MakeCitationList <- function( x, header, footer){
   }
   .format_person_as_yaml <- function(x){
     s <- lapply(unclass(x), function(e){
-      e <- e[!sapply(e, is.null)]
-      cargs <- sprintf("%s: %s", names(e), sapply(e, deparse))
+      e <- e[!vapply(e, is.null, FALSE)]
+      cargs <- sprintf("%s: %s", names(e), vapply(e, deparse, ""))
       .format_call_RR("\n    - ", cargs)
     })
     ## if (length(s))
@@ -478,21 +516,22 @@ MakeCitationList <- function( x, header, footer){
   }
   s <- lapply(unclass(x), function(e){
     a <- Filter(length, attributes(e)[anames])
-    e <- e[!sapply(e, is.null)]
+    e <- e[!vapply(e, is.null, FALSE)]
     ind <- !is.na(match(names(e), c(anames, manames, "other")))
     if (any(ind)) {
-      other <- paste(names(e[ind]), sapply(e[ind], f),
+      other <- paste(names(e[ind]), vapply(e[ind], f, ""),
                      sep = " = ")
-      other <- Map(g, names(e[ind]), sapply(e[ind], f))
+      other <- Map(g, names(e[ind]), vapply(e[ind], f, ""))
       other <- .format_call_RR("list", other)
       e <- e[!ind]
     }
     else {
       other <- NULL
     }
-    c(Map(g, names(a), sapply(a, deparse)), Map(g, names(e),
-                                                sapply(e, f)), if (length(other)) list(g("other",
-                                                                                         other)))
+    c(Map(g, names(a), vapply(a, deparse, "")), Map(g, names(e),
+                                                    lapply(e, f)),
+      if (length(other))
+          list(g("other", other)))
   })
   if (!is.null(mheader <- attr(x, "mheader")))
     s[[1L]] <- c(s[[1L]], paste("mheader = ", deparse(mheader)))
@@ -504,17 +543,20 @@ MakeCitationList <- function( x, header, footer){
   else unlist(lapply(s, paste, collapse = "\n"), use.names = FALSE)
 }
 
-bibentry_attribute_names <- c("bibtype", "textVersion", "header", "footer", "key", "dateobj")
-bibentry_format_styles <- c("text", "Bibtex", "citation", "html", "latex", "textVersion",
-                            "R", "Biblatex", "markdown", "yaml")
+bibentry_attribute_names <- c("bibtype", "textVersion", "header", "footer",
+                              "key", "dateobj")
+bibentry_format_styles <- c("text", "Bibtex", "citation", "html", "latex",
+                            "textVersion", "R", "Biblatex", "markdown", "yaml")
 
 # from utils:::toBibtex, good for matching by given name initials only
 #' @keywords internal
-format_author <- function(author) paste(sapply(author, function(p) {
+#' @noRd
+format_author <- function(author) paste(vapply(author, function(p) {
   fnms <- p$family
   only_given_or_family <- is.null(fnms) || is.null(p$given)
   fbrc <- if (length(fnms) > 1L || any(grepl("[[:space:]]",
-                                             fnms, useBytes = TRUE)) || only_given_or_family)
+                                             fnms, useBytes = TRUE)) ||
+              only_given_or_family)
     c("{", "}")
   else ""
   gbrc <- if (only_given_or_family)
@@ -522,11 +564,12 @@ format_author <- function(author) paste(sapply(author, function(p) {
   else ""
   format(p, include = c("given", "family"), braces = list(given = gbrc,
                                                           family = fbrc))
-}), collapse = " and ")
+}, ""), collapse = " and ")
 
 bibentry_list_attribute_names <- c("mheader", "mfooter", "strings")
 
 #' @keywords internal
+#' @noRd
 .BibEntry_get_key <- function (x){
   if (!length(x))
     return(character())
@@ -538,7 +581,8 @@ bibentry_list_attribute_names <- c("mheader", "mfooter", "strings")
 ## @keywords internal
 ## @importFrom XML xmlValue
 ## @importFrom stringr str_sub str_trim
-## ParseGSCites <- function(l, encoding, check.entries=.BibOptions$check.entries){
+## ParseGSCites <- function(l, encoding,
+##                   check.entries=.BibOptions$check.entries){
 ##   if (!length(l))
 ##     return(list())
 ##   td <- l[[1L]]
@@ -602,44 +646,120 @@ bibentry_list_attribute_names <- c("mheader", "mfooter", "strings")
 
 
 #' @keywords internal
+#' @noRd
 ProcessArxiv <- function(arxinfo){
-      res <- list(eprinttype = 'arxiv')
-      # need to check date since arXiv identifier format changed in Apr-07
-      m <- regexpr('[0-9]{1,2}[[:space:]][A-Z][a-z]{2}[[:space:]][0-9]{4}', arxinfo,
-                   useBytes = TRUE)
+  res <- list(eprinttype = 'arxiv')
+  # need to check date since arXiv identifier format changed in Apr-07
+  m <- regexpr('[0-9]{1,2}[[:space:]][A-Z][a-z]{2}[[:space:]][0-9]{4}',
+               arxinfo, useBytes = TRUE)
 
-      adate <- strptime(regmatches(arxinfo, m), format='%d %b %Y')
-      if (length(adate) && adate >= strptime('01 Apr 2007', format='%d %b %Y')){
-          m <- regexec('arXiv:([0-9]{4}[\\.][0-9]{4}v[0-9])[[:space:]]\\[([[:graph:]]+)\\]',
-                       arxinfo, useBytes = TRUE)
-        regm <- regmatches(arxinfo, m)
-        res$eprintclass <- regm[[1]][3]
-        res$eprint <- regm[[1]][2]
-      }else{
-        m <- regexec('arXiv:([[:graph:]]+)\\s', arxinfo, useBytes = TRUE)
-        regm <- regmatches(arxinfo, m)
-        res$eprint <- regm[[1]][2]
-      }
-      res$url <- paste0('http://arxiv.org/abs/', res$eprint)
-      res
+  adate <- strptime(regmatches(arxinfo, m), format='%d %b %Y')
+  if (length(adate) && adate >= strptime('01 Apr 2007', format='%d %b %Y')){
+    p <- 'arXiv:([0-9]{4}[\\.][0-9]{4}v[0-9])[[:space:]]\\[([[:graph:]]+)\\]'
+    m <- regexec(p, arxinfo, useBytes = TRUE)
+    regm <- regmatches(arxinfo, m)
+    res$eprintclass <- regm[[1]][3]
+    res$eprint <- regm[[1]][2]
+  }else{
+    m <- regexec('arXiv:([[:graph:]]+)\\s', arxinfo, useBytes = TRUE)
+    regm <- regmatches(arxinfo, m)
+    res$eprint <- regm[[1]][2]
+  }
+  res$url <- paste0('http://arxiv.org/abs/', res$eprint)
+  res
 }
 
+## @keywords internal
+## @importFrom stringr str_sub str_trim
+## ParseGSCites2 <- function(l, encoding,
+##                           check.entries=.BibOptions$check.entries){
+##   if (!length(l))
+##     return(list())
+##   td <- l[[1L]]
+
+##   title <- td[[1L]][[1L]]  # xmlValue(td[[1L]], encoding)
+##   author <- td[[2L]][[1L]]  # xmlValue(td[[2L]], encoding)
+##   cited_by <- as.numeric(l[[2L]][[1L]][[1]])
+##   if (is.na(cited_by))  # no citation yet
+##     cited_by <- "0"
+##   src <- td[[3L]][[1L]]  # xmlValue(td[[3L]], encoding)
+
+##   year <- as.numeric(regmatches(td[[3L]][[2L]][[1]],
+##                      regexpr("([12][0-9]{3}$)", src, useBytes = TRUE)))
+##   first_digit <- as.numeric(regexpr("[\\[\\(]?\\d",
+##                                     src, useBytes = TRUE)) - 1L
+##   ids <- which(first_digit < 0L)
+##   first_digit <- replace(first_digit, ids, str_length(src)[ids])
+##   journal <- str_trim(str_sub(src, 1L, first_digit))
+##   trailing_commas <- as.numeric(regexpr(",$", journal, useBytes = TRUE)) - 1L
+##   ids <- which(trailing_commas < 0L)
+##   trailing_commas <- replace(trailing_commas, ids,
+##                              str_length(journal)[ids])
+##   journal <- str_sub(journal, 1L, trailing_commas)
+##   numbers <- str_trim(str_sub(src, first_digit + 1L,
+##                               str_length(src)))
+##   # handle '...' in title, journal, or authors
+##   if (!identical(check.entries, FALSE)){
+##     if (is.null(title <- CheckGSDots(title, title, check.entries)) ||
+##           is.null(author <- CheckGSDots(author, title, check.entries)) ||
+##           is.null(journal <- CheckGSDots(journal, title, check.entries)))
+##       return(NA)
+##   }
+
+##   res <- list(title = title, author = author, cites = cited_by,
+##               year = year)
+##   if (!is.na(eprint <- regmatches(src, regexec("arXiv:([0-9.]*)", src,
+##                                                useBytes = TRUE))[[1]][2])){
+##     res$eprinttype <- "arxiv"
+##     res$eprint <- eprint
+##     res$url <- paste0("http://arxiv.org/abs/", eprint)
+##     attr(res, "entry") <- "misc"
+##   }else{
+##     if (is.na(numbers) || numbers == "" || as.character(year) == numbers){
+##       if (as.numeric(cited_by) < 10L){
+##         attr(res, "entry") <- "report"
+##         res$institution <- journal
+##         res$type <- "techreport"
+##       }else{
+##         attr(res, "entry") <- "book"
+##         res$publisher <- res$journal
+##       }
+##     }else{
+##       res$journal <- journal
+##       res$number <- numbers
+##       attr(res, 'entry') <- 'article'
+##       numbers <- ProcessGSNumbers(res$number)
+##       res$number <- numbers$number
+##       res$pages <- numbers$pages
+##       res$volume <- numbers$volume
+##     }
+##   }
+
+##   res$author <- ProcessGSAuthors(res$author)  # format authors for MakeBibEntry
+##   # create key
+##   attr(res, "key") <- CreateBibKey(res$title, res$author, res$year)
+
+##   return(res)
+## }
+
 #' @keywords internal
-#' @importFrom XML xmlValue
+#' @noRd
 #' @importFrom stringr str_sub str_trim
-ParseGSCites2 <- function(l, encoding, check.entries=.BibOptions$check.entries){
-  if (!length(l))
-    return(list())
-  td <- l[[1L]]
+ParseGSCitesNew <- function(title, author, year, src, cited_by, encoding,
+                            check.entries=.BibOptions$check.entries){
+  ## if (!length(l))
+  ##   return(list())
+  ## td <- l[[1L]]
 
-  title <- xmlValue(td[[1L]], encoding)
-  author <- xmlValue(td[[2L]], encoding)
-  cited_by <- as.numeric(xmlValue(l[[2L]][[1L]], encoding))
-  if (is.na(cited_by))  # no citation yet
+  ## title <- td[[1L]][[1L]]  # xmlValue(td[[1L]], encoding)
+  ## author <- td[[2L]][[1L]]  # xmlValue(td[[2L]], encoding)
+  ## cited_by <- as.numeric(l[[2L]][[1L]][[1]])
+  if (is.na(as.numeric(cited_by)))  # no citation yet
     cited_by <- "0"
-  src <- xmlValue(td[[3L]], encoding)
+  ## src <- td[[3L]][[1L]]  # xmlValue(td[[3L]], encoding)
 
-  year <- as.numeric(regmatches(src, regexpr("([12][0-9]{3}$)", src, useBytes = TRUE)))
+    ## year <- as.numeric(regmatches(td[[3L]][[2L]][[1]],
+    ##                    regexpr("([12][0-9]{3}$)", src, useBytes = TRUE)))
   first_digit <- as.numeric(regexpr("[\\[\\(]?\\d",
                                     src, useBytes = TRUE)) - 1L
   ids <- which(first_digit < 0L)
@@ -670,14 +790,18 @@ ParseGSCites2 <- function(l, encoding, check.entries=.BibOptions$check.entries){
     attr(res, "entry") <- "misc"
   }else{
     if (is.na(numbers) || numbers == "" || as.character(year) == numbers){
-      if (as.numeric(cited_by) < 10L){
-        attr(res, "entry") <- "report"
-        res$institution <- journal
-        res$type <- "techreport"
-      }else{
-        attr(res, "entry") <- "book"
-        res$publisher <- res$journal
-      }
+        if (.is_not_nonempty_text(journal))
+            attr(res, "entry") <- "misc"
+        else{
+          if (as.numeric(cited_by) < 10L){
+            attr(res, "entry") <- "report"
+            res$institution <- journal
+            res$type <- "techreport"
+          }else{
+            attr(res, "entry") <- "book"
+            res$publisher <- res$journal
+          }
+        }
     }else{
       res$journal <- journal
       res$number <- numbers
@@ -697,14 +821,17 @@ ParseGSCites2 <- function(l, encoding, check.entries=.BibOptions$check.entries){
 }
 
 #' @keywords internal
+#' @noRd
 #' @importFrom utils as.person
 ProcessGSAuthors <- function(authors){
   # authors <- gsub(',', ', and', authors)  # add "and" to separate authors
-  # authors <- gsub('([A-Z])([A-Z])', '\\1 \\2', authors)  # add space between given name initials
+  ## add space between given name initials
+  # authors <- gsub('([A-Z])([A-Z])', '\\1 \\2', authors)  
   authors <- gsub(", [.]{3}$", "", authors, useBytes = TRUE)
   authors <- strsplit(authors, ", ")[[1]]
 
-  # need to ensure given name initials are processed correctly, GS returns them without spaces
+  ## need to ensure given name initials are processed correctly,
+  ## GS returns them without spaces
   m <- regexec("^([[:alpha:]]*)[[:space:]](.*)", authors, useBytes = TRUE)
   autList <- regmatches(authors, m)
   autList <- lapply(seq_along(authors), function(i){
@@ -713,14 +840,15 @@ ProcessGSAuthors <- function(authors){
     else authors[[i]]
   } )
 
-  # autList <- lapply(regmatches(authors, m), function(name) paste0(gsub("(.)", "\\1 ", name[2]),
-  #                                                                name[3]))
+  ## autList <- lapply(regmatches(authors, m), function(name)
+  ##                   paste0(gsub("(.)", "\\1 ", name[2]), name[3]))
   authors <- gsub("(\\w)(\\w*)", "\\U\\1\\L\\2", autList, perl = TRUE)
 
   return(as.person(authors))
 }
 
 #' @keywords internal
+#' @noRd
 ProcessGSNumbers <- function(numbers){
   pages <- volume <- number <- NULL
 
@@ -749,10 +877,12 @@ CheckGSDots <- function(x, title, check){
   if(is.na(x) || tx != x){
     entry <- deparse(substitute(x))
     if (check == 'warn'){
-      warning(paste0('Incomplete ', entry, ' information for entry \"', title, '\" adding anyway'))
+        warning(paste0('Incomplete ', entry, ' information for entry \"',
+                       title, '\" adding anyway'))
       return(tx)
     }else{
-      message(paste0('Incomplete ', entry, ' information for entry \"', title, '\" it will NOT be added'))
+        message(paste0('Incomplete ', entry, ' information for entry \"',
+                       title, '\" it will NOT be added'))
       return()
     }
   }else{
@@ -769,14 +899,15 @@ MakeBibEntry <- function(x, to.person = TRUE){
   fun <- ifelse(to.person, "ArrangeAuthors", "as.person")
   name.fields <- intersect(names(y), .BibEntryNameList)
   line.no <- if (is.null(attr(x, "srcref")))
-               ""
+               " "
              else
-               paste0("(line", attr(x, "srcref")[1], ") ")
+               paste0(" (line", attr(x, "srcref")[1], ") ")
   lapply(name.fields, function(fld)
          y[[fld]] <<- tryCatch(do.call(fun, list(y[[fld]])),
                         error = function(e){
-                        message(sprintf("Ignoring entry '%s' %sbecause: \n\tThe name list field '%s' cannot be parsed\n",
-                                          attr(x, "key"), line.no, fld))
+                            message("Ignoring entry ", sQuote(key), line.no,
+                                    "because: \n\tThe name list field ",
+                                    fld, " cannot be parsed\n")
                             NA
                             }))
   # Check if any were invalid, if so don't add entry
@@ -842,7 +973,8 @@ ProcessDate <- function(dat, mon, searching = FALSE){
     if (length(dats) == 1L)
       dats <- c(dat, dat)
     if (!is.null(mon)){
-      ## Some Bibtex users, e.g. paperpile.com, format month as `"day~" # month` in bib entry;
+      ## Some Bibtex users, e.g. paperpile.com, format month as
+      ## `"day~" # month` in bib entry;
       ##   attempt to handle this
       ## examples: "2~" # dec, "4--6~" # aug, jan # "/" # feb,
       res <- try(if (grepl("~", mon, useBytes = TRUE)){
@@ -851,46 +983,71 @@ ProcessDate <- function(dat, mon, searching = FALSE){
                .day <- TRUE
                if (length(days) == 2){
                   if (length(mons) == 1)
-                    interval(parse_date_time(paste0(dats[1], "-", mons, "-", days[1]),
-                                                 c("%Y-%m-%d", "%Y-%b-%d")),
-                                 parse_date_time(paste0(dats[2], "-", mons, "-", days[2]),
-                                                 c("%Y-%m-%d", "%Y-%b-%d")))
+                   interval(parse_date_time(paste0(dats[1], "-", mons, "-",
+                                                   days[1]),
+                                            c("%Y-%m-%d", "%Y-%b-%d"),
+                                            locale = "C"),
+                            parse_date_time(paste0(dats[2], "-", mons, "-",
+                                                   days[2]),
+                                            c("%Y-%m-%d", "%Y-%b-%d"),
+                                            locale = "C"))
                   else if(length(mons) == 2)
-                    interval(parse_date_time(paste0(dats[1], "-", mons[1], "-", days[1]),
-                                                 c("%Y-%m-%d", "%Y-%b-%d")),
-                                 parse_date_time(paste0(dats[2], "-", mons[2], "-", days[2]),
-                                                 c("%Y-%m-%d", "%Y-%b-%d")))
+                      interval(parse_date_time(paste0(dats[1], "-", mons[1],
+                                                      "-", days[1]),
+                                               c("%Y-%m-%d", "%Y-%b-%d"),
+                                               locale = "C"),
+                               parse_date_time(paste0(dats[2], "-", mons[2],
+                                                      "-", days[2]),
+                                               c("%Y-%m-%d", "%Y-%b-%d"),
+                                               locale = "C"))
                   else NA
               }else{
                 if (length(mons) == 1){
                   if (dats[1] == dats[2])
-                    parse_date_time(paste0(dat, "-", mons, "-", days), c("%Y-%m-%d", "%Y-%b-%d"))
+                    parse_date_time(paste0(dat, "-", mons, "-", days),
+                                    c("%Y-%m-%d", "%Y-%b-%d"), locale = "C")
                   else
-                    interval(parse_date_time(paste0(dats[1], "-", mons, "-", days),
-                                                 c("%Y-%m-%d", "%Y-%b-%d")),
-                                 parse_date_time(paste0(dats[2], "-", mons, "-", days),
-                                                 c("%Y-%m-%d", "%Y-%b-%d")))
+                      interval(parse_date_time(paste0(dats[1], "-", mons, "-",
+                                                      days),
+                                               c("%Y-%m-%d", "%Y-%b-%d"),
+                                               locale = "C"),
+                               parse_date_time(paste0(dats[2], "-", mons,
+                                                      "-", days),
+                                               c("%Y-%m-%d", "%Y-%b-%d"),
+                                               locale = "C"))
                 }else if (length(mons) == 2)
-                  interval(parse_date_time(paste0(dats[1], "-", mons[1], "-", days),
-                                               c("%Y-%m-%d", "%Y-%b-%d")),
-                               parse_date_time(paste0(dats[2], "-", mons[2], "-", days),
-                                               c("%Y-%m-%d", "%Y-%b-%d")))
+                    interval(parse_date_time(paste0(dats[1], "-", mons[1], "-",
+                                                    days),
+                                             c("%Y-%m-%d", "%Y-%b-%d"),
+                                             locale = "C"),
+                             parse_date_time(paste0(dats[2], "-", mons[2],
+                                                    "-", days),
+                                             c("%Y-%m-%d", "%Y-%b-%d"),
+                                             locale = "C"))
                 else NA
               }
           }else if (grepl("/", mon, useBytes = TRUE)){  # feb/mar
             mons <- strsplit(mon, "/")[[1L]]
-            interval(parse_date_time(paste0(dats[1], "-", mons[1], "-01"), c("%Y-%m-%d", "%Y-%b-%d")),
-                         parse_date_time(paste0(dats[2], "-", mons[2], "-01"), c("%Y-%m-%d", "%Y-%b-%d")))
+            interval(parse_date_time(paste0(dats[1], "-", mons[1], "-01"),
+                                     c("%Y-%m-%d", "%Y-%b-%d"), locale = "C"),
+                     parse_date_time(paste0(dats[2], "-", mons[2], "-01"),
+                                     c("%Y-%m-%d", "%Y-%b-%d"), locale = "C"))
           }else{
             if (dats[1] == dats[2])
-              parse_date_time(paste0(dat, '-', mon, '-01'), c("%Y-%m-%d", "%Y-%b-%d"))
+                parse_date_time(paste0(dat, '-', mon, '-01'),
+                                c("%Y-%m-%d", "%Y-%b-%d"), locale = "C")
             else
-              interval(parse_date_time(paste0(dats[1], '-', mon, '-01'), c("%Y-%m-%d", "%Y-%b-%d")),
-                           parse_date_time(paste0(dats[2], '-', mon, '-01'), c("%Y-%m-%d", "%Y-%b-%d")))
+                interval(parse_date_time(paste0(dats[1], '-', mon, '-01'),
+                                         c("%Y-%m-%d", "%Y-%b-%d"),
+                                         locale = "C"),
+                         parse_date_time(paste0(dats[2], '-', mon, '-01'),
+                                         c("%Y-%m-%d", "%Y-%b-%d"),
+                                         locale = "C"))
           }, TRUE)
       if (inherits(res, "try-error") || is.na(res)){
-         warning(paste0("Failed to parse month: ", mon, ". Ignoring and using year only."))
-         .day <- FALSE
+        warning(gettextf("Failed to parse month: %s%s", mon,
+                       ". Ignoring and using year only."))
+       .day <- FALSE
       }else
         .mon <- TRUE
     }
@@ -898,11 +1055,14 @@ ProcessDate <- function(dat, mon, searching = FALSE){
       res <- if (dats[1] == dats[2])
                as.POSIXct(paste0(dat, '-01-01'))
              else
-               interval(as.POSIXct(paste0(dats[1], '-01-01')), as.POSIXct(paste0(dats[2], '-01-01')))
+               interval(as.POSIXct(paste0(dats[1], '-01-01')),
+                        as.POSIXct(paste0(dats[2], '-01-01')))
 
   }else if (grepl('^(1|2)[0-9]{3}/$', dat, useBytes = TRUE)){
     if (!is.null(mon)){
-      res <- interval(parse_date_time(paste0(substring(dat, 1, 4), '-', mon, '-01'), c("%Y-%m-%d", "%Y-%b-%d")),
+        res <- interval(parse_date_time(paste0(substring(dat, 1, 4), '-',
+                                               mon, '-01'),
+                                        c("%Y-%m-%d", "%Y-%b-%d"), locale="C"),
                           Sys.Date())
       .mon <- TRUE
     }else{
@@ -911,22 +1071,27 @@ ProcessDate <- function(dat, mon, searching = FALSE){
   }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]/$', dat, useBytes = TRUE)){
     res <- interval(paste0(substring(dat, 1, 7), '-01'), Sys.Date())
     .mon <- TRUE
-  }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]/$', dat, useBytes = TRUE)){
+  }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]/$', dat,
+                  useBytes = TRUE)){
     res <- interval(substring(dat, 1, 10), Sys.Date())
     .mon <- .day <- TRUE
   }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]$', dat, useBytes = TRUE)){
     res <- as.POSIXct(paste0(dat, '-01'))
     .mon <- TRUE
-  }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]$', dat, useBytes = TRUE)){
+  }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]$', dat, useBytes=TRUE)){
     res <- as.POSIXct(dat)
     .day <- .mon <- TRUE
-  ## already handled above: }else if (grepl('^(1|2)[0-9]{3}/(1|2)[0-9]{3}$', dat)){
-  ##  res <- interval(paste0(substring(dat, 1, 4), '-01-01'), paste0(substring(dat, 6, 9), '-01-01'))
-  }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]/(1|2)[0-9]{3}-[01][0-9]$', dat, useBytes = TRUE)){
-    res <- interval(paste0(substring(dat, 1, 7), '-01'), paste0(substring(dat, 9, 15), '-01'))
+    ## already handled above:
+    ## }else if (grepl('^(1|2)[0-9]{3}/(1|2)[0-9]{3}$', dat)){
+    ##  res <- interval(paste0(substring(dat, 1, 4), '-01-01'),
+    ## paste0(substring(dat, 6, 9), '-01-01'))
+  }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]/(1|2)[0-9]{3}-[01][0-9]$', dat,
+                  useBytes = TRUE)){
+    res <- interval(paste0(substring(dat, 1, 7), '-01'),
+                    paste0(substring(dat, 9, 15), '-01'))
     .mon <- TRUE
-  }else if (grepl('^(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]/(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]$',
-                dat, useBytes = TRUE)){
+  }else if (grepl(paste0("^(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]/(1|2)[0-9]{3}",
+                         "-[01][0-9]-[0-3][0-9]$"), dat, useBytes = TRUE)){
     res <- interval(substring(dat, 1, 10), substring(dat, 12, 21))
     .day <- .mon <- TRUE
   }else if (searching){
@@ -934,7 +1099,8 @@ ProcessDate <- function(dat, mon, searching = FALSE){
       res <- interval('0001-01-01', paste0(substring(dat, 2, 5), '-01-01'))
     }else if (grepl('^/(1|2)[0-9]{3}-[01][0-9]$', dat, useBytes = TRUE)){
       res <- interval('0001-01-01', paste0(substring(dat, 2, 8), '-01'))
-    }else if (grepl('^/(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]$', dat, useBytes = TRUE)){
+    }else if (grepl('^/(1|2)[0-9]{3}-[01][0-9]-[0-3][0-9]$', dat,
+                    useBytes = TRUE)){
       res <- interval('0001-01-01', substring(dat, 2, 11))
     }else{
       stop('No valid date format available.')
@@ -948,11 +1114,13 @@ ProcessDate <- function(dat, mon, searching = FALSE){
 
 #' @keywords internal
 CreateBibKey <- function(ti, au, yr){
-  ## useBytes = TRUE can cause error to be thrown by tolower if non-ASCII character match
-  ##   because regmatches will return a string with "bytes" encoding
+  ## useBytes = TRUE can cause error to be thrown by tolower if non-ASCII
+  ## character match because regmatches will return string with "bytes" encoding
+
+  ## will be character(0) if no matches or if ti is NULL  
   key.title <- try({
         m <- regexpr("\\w{4,}", ti, useBytes = FALSE, perl = FALSE)
-        tolower(regmatches(ti, m))  # will be character(0) if no matches or if ti is NULL
+        tolower(regmatches(ti, m))  
   }, TRUE)
   if (inherits(key.title, "try-error"))
       key.title <- ""
@@ -968,12 +1136,17 @@ CreateBibKey <- function(ti, au, yr){
   return(res)
 }
 
-.BibEntryNameList <- c('author', 'editor', 'editora', 'editorb', 'editorc', 'translator', 'commentator', 'annotator',
-             'introduction', 'foreword', 'afterword', 'bookauthor', 'holder')
-.BibEntryDateField <- c('date', 'year', 'month', 'eventdate', 'origdate', 'urldate')
-.BibEntryTypeField <- c(mathesis = 'MA Thesis', phdthesis = 'PhD thesis', datacd = 'CD-ROM',
-                        candthesis = 'Cand. thesis', techreport = 'Tech. rep.',
-                        resreport = 'Research rep.', software = 'Comp. software', audiocd = 'Audio CD')
+.BibEntryNameList <- c('author', 'editor', 'editora', 'editorb', 'editorc',
+                       'translator', 'commentator', 'annotator',
+                       'introduction', 'foreword', 'afterword', 'bookauthor',
+                       'holder')
+  
+.BibEntryDateField <- c('date', 'year', 'month', 'eventdate', 'origdate', 
+                        'urldate')
+.BibEntryTypeField <- c(mathesis = 'MA Thesis', phdthesis = 'PhD thesis',
+                        datacd = 'CD-ROM', candthesis = 'Cand. thesis',
+                        techreport = 'Tech. rep.', resreport = 'Research rep.',
+                        software = 'Comp. software', audiocd = 'Audio CD')
 
 
 #' @keywords internal

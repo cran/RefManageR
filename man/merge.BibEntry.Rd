@@ -3,6 +3,7 @@
 \name{+.BibEntry}
 \alias{+.BibEntry}
 \alias{merge.BibEntry}
+\alias{+.BibEntry}
 \title{Merge two BibEntry objects while discarding duplicates}
 \usage{
 \method{+}{BibEntry}(e1, e2)
@@ -19,9 +20,11 @@
 
 \item{y}{BibEntry object}
 
-\item{fields.to.check}{character vector; which BibLaTeX fields should be checked to determine if an entry
-is a duplicate?  Can include \code{"bibtype"} to check entry type and \code{"key"} to check entry keys.
-Specifying \code{"all"} checks all fields using \code{\link{duplicated}}.}
+\item{fields.to.check}{character vector; which BibLaTeX fields should be
+checked to determine if an entry
+is a duplicate?  Can include \code{"bibtype"} to check entry type and
+\code{"key"} to check entry keys. Specifying \code{"all"} checks all fields
+using \code{\link{duplicated}}.}
 
 \item{...}{ignored}
 }
@@ -29,8 +32,10 @@ Specifying \code{"all"} checks all fields using \code{\link{duplicated}}.}
 an object of class BibEntry
 }
 \description{
-Merges two BibEntry objects comparing only the specified fields to detect duplicates, thus it is can be made less strict
-than using \code{duplicated}, \code{unique}, etc.  Attributes are also merged and keys are ensured to be unique.
+Merges two BibEntry objects comparing only the specified fields to detect
+duplicates, thus it is can be made less strict
+than using \code{duplicated}, \code{unique}, etc.  Attributes are also merged
+and keys are ensured to be unique.
 \code{merge} and \code{+} simply provide different interfaces for merging.
 }
 \examples{
@@ -39,9 +44,9 @@ bib <- suppressMessages(ReadBib(file.name))
 bib1 <- bib[seq_len(44)]
 bib2 <- bib[45:length(bib)]
 
-## The following is FALSE because the parent entry of one entry in bib1 is in bib2,
-##   so the child entry in is expanded in the BibEntry object returned by `[`
-##   to include the fields inherited from the dropped parent
+## The following is FALSE because the parent entry of one entry in bib1
+##   is in bib2, so the child entry in is expanded in the BibEntry object
+##   returned by `[` to include the fields inherited from the dropped parent
 identical(merge(bib1, bib2, 'all'), bib)
 toBiblatex(bib1[[1L]])
 toBiblatex(bib[[1L]])
@@ -65,9 +70,6 @@ rjc.new.pubs <- bib1 + bib2
 BibOptions(oldopt)
 }
 }
-\author{
-McLean, M. W. \email{mathew.w.mclean@gmail.com}
-}
 \seealso{
 \code{\link{duplicated}}, \code{\link{unique}}
 
@@ -76,5 +78,7 @@ Other operators: \code{\link{$.BibEntry}},
   \code{\link{[<-.BibEntry}}, \code{\link{[[.BibEntry}},
   \code{\link{[[<-.BibEntry}}, \code{\link{c.BibEntry}}
 }
+\author{
+McLean, M. W. \email{mathew.w.mclean@gmail.com}
+}
 \keyword{methods}
-

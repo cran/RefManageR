@@ -20,7 +20,7 @@ context("Sorting")
 ## @return numeric vector with length \code{length(strs)}
 grep.o <- function(fname, strs){
     txt <- readLines(fname)
-    order(apply(sapply(strs, grepl, x = txt), 2, which))
+    order(apply(vapply(strs, grepl, logical(length(txt)), x = txt), 2, which))
 }
 
 expect_order <- function(ord, fname, strs)
@@ -42,7 +42,7 @@ test_that("No sorting", {
     BibOptions(sorting = "none")
     capture.output(BIB, file = tfile)
     expect_order(1:3, tfile, c("E1", "E2", "E3"))
-                 ##c("\\[KpV\\] I. Kant", "\\[KU\\] I. Kant", "Nachtheil", "Brandt"))
+         ##c("\\[KpV\\] I. Kant", "\\[KU\\] I. Kant", "Nachtheil", "Brandt"))
 })
 
 test_that("nyt sorting", {

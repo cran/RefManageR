@@ -56,14 +56,14 @@ recurring author and editor names are replaced with \dQuote{---} when printing.
 \code{\link{sort.BibEntry}}
 \item \code{max.names} - numeric; maximum number of names to display before using \dQuote{et al.} when formatting and printing name
 list fields.  This is also the minimum number of names that will be displayed if \dQuote{et al.} is used 
-(minnames package option in Biblatex) 
+(\sQuote{minnames} package option in Biblatex) 
 \item \code{no.print.fields} character vector; fields that should not be printed, 
 e.g., doi, url, isbn, etc.
 \item \code{style} - character string naming the printing style.  Possible values are 
 plain text (style \dQuote{text}), BibTeX (\dQuote{Bibtex}), BibLaTeX (\dQuote{Biblatex}),
 a mixture of plain text and BibTeX as 
 traditionally used for citations (\dQuote{citation}), HTML (\dQuote{html}), 
-LaTeX (\dQuote{latex}), \dQuote{markdown}, 
+LaTeX (\dQuote{latex}), \dQuote{markdown}, \dQuote{yaml}, 
 R code (\dQuote{R}), and a simple copy of the textVersion elements 
 (style \dQuote{textVersion}, see \code{\link{BibEntry}})
 }
@@ -125,4 +125,3 @@ BibOptions(restore.defaults = TRUE)
 \seealso{
 \code{\link{print.BibEntry}}, \code{\link{BibEntry}}, \code{\link{options}}
 }
-

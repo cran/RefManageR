@@ -10,8 +10,8 @@
 #' @param suppress.messages boolean; should the head/tail entries be printed via \code{\link{message}}?   
 #' @param ... arguments to be passed to or from other methods.   
 #' @details If \code{suppress.messages} is \code{FALSE}, the head/tail entries are output to the console along
-#'   with some additional formatting for the \sQuote{bibtype} and \sQuote{key}, in addition to invisibling
-#'   returning the entries.
+#'   with some additional formatting for the \sQuote{bibtype} and \sQuote{key}, in addition to
+#' invisibly returning the entries.
 #' @return an object of class BibEntry.  
 #' @importFrom utils head tail
 #' @rdname head.BibEntry
@@ -22,18 +22,18 @@ head.BibEntry <- function (x, n = 6L, suppress.messages = TRUE, ...){
     stopifnot(length(n) == 1L)
     
     n <- if (n < 0L) 
-        max(length(x) + n, 0L)
-    else min(n, length(x))
+            max(length(x) + n, 0L)
+         else min(n, length(x))
 
     ind <- seq_len(n)
     bibtype <- unlist(x$bibtype)
     key <- unlist(x$key)
 
     if (!suppress.messages)
-    message(paste0(sapply(ind, function(i){
-                    paste(paste0('[[', i, ']] ', bibtype[i], ': ', key[i]),
-                      format(x[[i]]), sep = '\n')
-                      }), collapse='\n\n'))
+      message(paste0(vapply(ind, function(i){
+                      paste(paste0('[[', i, ']] ', bibtype[i], ': ', key[i]),
+                        format(x[[i]]), sep = '\n')
+                        }, ""), collapse='\n\n'))
 
     invisible(x[ind])
 }
@@ -53,10 +53,10 @@ tail.BibEntry <- function (x, n = 6L, suppress.messages = TRUE, ...){
     bibtype <- unlist(x$bibtype)
     key <- unlist(x$key)
     if (!suppress.messages)
-      message(paste0(sapply(ind, function(i){
+      message(paste0(vapply(ind, function(i){
                     paste(paste0('[[', i, ']] ', bibtype[i], ': ', key[i]),
                       format(x[[i]]), sep = '\n')
-                      }), collapse='\n\n'))
+                      }, ""), collapse='\n\n'))
 
     invisible(x[ind])
 }

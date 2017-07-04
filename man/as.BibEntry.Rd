@@ -3,6 +3,7 @@
 \name{as.BibEntry}
 \alias{as.BibEntry}
 \alias{is.BibEntry}
+\alias{is.BibEntry}
 \title{Coerce to a BibEntry object}
 \usage{
 as.BibEntry(x)
@@ -15,17 +16,20 @@ is.BibEntry(x)
 \value{
 \code{as.BibEntry} - if successful, an object of class BibEntry.
 
-\code{is.BibEntry} - logical; \code{TRUE} if \code{x} is a BibEntry object.
+\code{is.BibEntry} - logical; \code{TRUE} if \code{x} is a BibEntry
+object.
 }
 \description{
 Functions to check if an object is a BibEntry, or coerce it if possible.
 }
 \details{
-\code{as.BibEntry} is able to coerce suitably formatted character vectors, \code{\link{bibentry}} objects, lists,
+\code{as.BibEntry} is able to coerce suitably formatted character
+vectors, \code{\link{bibentry}} objects, lists,
 and data.frames to BibEntry objects.  See the examples.
 }
 \note{
-Each entry to be coerced should have a bibtype, key, and all required fields for the specified bibtype.
+Each entry to be coerced should have a bibtype, key, and all required
+fields for the specified bibtype.
 }
 \examples{
 file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
@@ -55,4 +59,3 @@ as.BibEntry(bib)
 \code{\link{BibEntry}}
 }
 \keyword{utilities}
-

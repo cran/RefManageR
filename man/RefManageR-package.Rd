@@ -2,8 +2,8 @@
 % Please edit documentation in R/RefManageR-package.R
 \docType{package}
 \name{RefManageR-package}
-\alias{RefManageR}
 \alias{RefManageR-package}
+\alias{RefManageR}
 \alias{refmanager}
 \title{Import and Manage BibTeX and BibLaTeX references with RefManageR}
 \description{
@@ -43,7 +43,7 @@ a BibTeX file, converting fields, entry types and expanding crossreferences as n
 BibTeX.  \code{\link{toBiblatex}} converts the BibEntry object to a character vector containing lines of 
 the corresponding BibLaTeX file.  The results can be written to a file using \code{\link{WriteBib}}.
 
-Citations can be gerenated in a number of styles using one of the available functions for 
+Citations can be generated in a number of styles using one of the available functions for 
 citations.  A list of references can be printed based on the works the user has cited thus far
 in their document.  See \code{\link{Cite}}.  The citations and bibliography can be printed 
 including hyperlinks using either the R Markdown or R HTML formats.
@@ -59,9 +59,6 @@ The convenience function \code{\link{BibOptions}} is provided for setting defaul
 functions such as \code{\link{print.BibEntry}}, \code{\link{[.BibEntry}}, and 
 \code{\link{Cite}}.  Its interface is similar to \code{\link{options}}.
 }
-\author{
-McLean, M. W. \email{mathew.w.mclean@gmail.com}
-}
 \references{
 McLean, M. W. (2014). Straightforward Bibliography Management in R Using the RefManageR Package.
 \href{https://arxiv.org/abs/1403.2036}{arXiv: 1403.2036 [cs.DL]}. Submitted.
@@ -75,5 +72,7 @@ Who Did What? The Roles of R Package Authors and How to Refer to Them. The R Jou
 
 Patashnik, O (1988). Bibtexing. \url{https://mirror.pregi.net/tex-archive/biblio/bibtex/contrib/doc/btxdoc.pdf}.
 }
+\author{
+McLean, M. W. \email{mathew.w.mclean@gmail.com}
+}
 \keyword{package}
-

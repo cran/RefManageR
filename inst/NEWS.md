@@ -1,3 +1,41 @@
+Changes in Version 0.14.12 (2017-06-30)
+--------------------------------------------------------
+NEW FEATURES
+
+* Package now uses httr, xml2, jsonlite packages instead of RCurl, XML, RJSONIO
+for scaffolding
+* No more R CMD check NOTE regarding foreign function call to bibtex (h/t Romain
+Francois)
+
+BUG FIXES
+
+* fix printing when `BibOptions(style = 'yaml)`
+* remove invalid character in inst/Bib/RJC.bib
+* correct parsing of interval dates when creating unique labels for authoryear style
+citations
+* `c.BibEntry` throws an error if not all objects are `bibentry` objects
+* fix typos in documentation
+* Literal ampersands are now printed correctly (not as '\&') (h/t Yue Hu)
+* Ensure BibTeX month macros are processed properly by lubridate
+in non-English locales (h/t Sergio Oller)
+
+Changes in Version 0.13.4 (2017-04-25)
+--------------------------------------------------------
+
+BUG FIXES
+
+* Unescape special characters in URL fields returned by CrossRef (h/t Michael Schubert) 
+* Remove square brackets from custom entry type names (h/t Hugh Parsonage)
+
+Changes in Version 0.13.1 (2016-11-14)
+--------------------------------------------------------
+
+BUG FIXES
+
+* Feature involving `LaTeX` macros added in package version 0.12.0 can only be used
+for R 3.3.z and higher; this corrects cause of failed checks on R 3.2.z
+
+
 Changes in Version 0.13.0 (2016-11-09)
 --------------------------------------------------------
 
@@ -15,7 +53,8 @@ Changes in Version 0.12.0 (2016-09-30)
 NEW FEATURES
 
 * Some `LaTeX` macros unknown to R are now defined as macros in the package, and will
-be parsed using `macros` arg in `tools::parse_Rd` (assuming `getRversion() >= "3.2.0"`)
+be parsed using `macros` arg in `tools::parse_Rd` (assuming `getRversion() >= "3.2.0"`
+Note: corrected in 0.13.1 to be `getRversion() >= "3.3.0"`)
 
 BUG FIXES
 

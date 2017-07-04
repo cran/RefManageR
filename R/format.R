@@ -1,17 +1,21 @@
-# Encode in a common format
-#
-# Format a BibEntry object in a pretty format.
-#
-# @param x - an object of class BibEntry
-# @param style
-# @return character vector containing formatted BibEntry object.
-# @seealso \code{\link{print.BibEntry}}, \code{\link{BibEntry}}
+#' Encode in a common format
+#'
+#' Format a BibEntry object in a pretty format.
+#'
+#' @param x an object of class BibEntry
+#' @param style see \code{\link[RefManageR]{print.BibEntry}}
+#' @return character vector containing formatted BibEntry object.
+#' @seealso \code{\link{print.BibEntry}}, \code{\link{BibEntry}}
 #' @importFrom tools Rd2txt_options Rd2txt Rd2HTML Rd2latex loadPkgRdMacros
-#' @S3method format BibEntry
+## @S3method format BibEntry
+#' @export
 #' @keywords internal
-format.BibEntry <- function(x, style = .BibOptions$style, .bibstyle = .BibOptions$bib.style,
-                             citation.bibtex.max = getOption("citation.bibtex.max", 1), .sort = TRUE,
-                            .sorting = 'nty', enc = 'UTF-8', ...){
+#' @noRd
+format.BibEntry <- function(x, style = .BibOptions$style,
+                            .bibstyle = .BibOptions$bib.style,
+                            citation.bibtex.max =
+                                getOption("citation.bibtex.max", 1),
+                            .sort = TRUE, .sorting = 'nty', enc = 'UTF-8', ...){
     old.opts <- BibOptions(list(style = .BibEntry_match_format_style(style),
                                return.ind = FALSE))
     on.exit(BibOptions(old.opts))
@@ -20,7 +24,8 @@ format.BibEntry <- function(x, style = .BibOptions$style, .bibstyle = .BibOption
     ## .BibOptions$return.ind <- FALSE
     ## on.exit(.BibOptions$return.ind <- ret.ind)
     if (.sort && !style %in% c('html', 'text', 'latex', "markdown"))
-      x <- sort(x, .bibstyle = .bibstyle, sorting = .sorting, return.labs = TRUE)
+      x <- sort(x, .bibstyle = .bibstyle, sorting = .sorting,
+                return.labs = TRUE)
 
     .format_bibentry_via_Rd <- function(f){
         out <- file()
@@ -31,34 +36,40 @@ format.BibEntry <- function(x, style = .BibOptions$style, .bibstyle = .BibOption
         })
         x <- .BibEntry_expand_crossrefs(x)
         if (.sort)
-          x <- sort(x, .bibstyle = .bibstyle, sorting = .sorting, return.labs = TRUE)
-        res <- sapply(x, function(y) {
+          x <- sort(x, .bibstyle = .bibstyle, sorting = .sorting,
+                    return.labs = TRUE)
+        res <- vapply(x, function(y) {
           rd <- toRd.BibEntry(y, .style = .bibstyle, .sorting = 'none')
           con <- textConnection(rd)
           on.exit(close(con))
           ## macro.env <- tools::loadRdMacros(file.path(R.home("share"), "Rd",
           ##                                            "macros", "system.Rd"))
           if (getRversion() >= "3.3.0"){
-              ## prevent use of devtools::system.file
-              macro.env <- tools::loadPkgRdMacros(base::system.file(package = "RefManageR"))
-              f(con, fragment = TRUE, out = out, outputEncoding = 'UTF-8', macros = macro.env,
-                ...)
+            ## !!! prevent use of devtools::system.file
+            macro.env <- tools::loadPkgRdMacros(base::system.file(package =
+                                                                "RefManageR"))
+            f(con, fragment = TRUE, out = out, outputEncoding = 'UTF-8',
+              macros = macro.env, ...) 
           }else
               f(con, fragment = TRUE, out = out, outputEncoding = 'UTF-8', ...)
               
           paste(readLines(out, encoding = 'UTF-8'), collapse = "\n")
-        })
+        }, "")
         if (style == "html"){
-          res <- sub("<code>([[:print:]]*)</code>", "<a id='bib-\\1'></a>", res, useBytes = TRUE)
+            res <- sub("<code>([[:print:]]*)</code>", "<a id='bib-\\1'></a>",
+                       res, useBytes = TRUE)
           res <- if (.bibstyle == "alphabetic" || .bibstyle == "numeric")
-            sub("^<p>([[:print:]]*\\])(</a>)?", "<p>\\1\\2<cite>", res, useBytes = TRUE)
-          else if (.bibstyle == "draft") sub("^<p>([[:print:]]*</B>)",
-                        "<p>\\1<cite>", res, useBytes = TRUE)
-          else sub("^<p>", "<p><cite>", res, useBytes = TRUE)
-          res <- sapply(res, function(x) if (grepl("<cite>", x, useBytes = TRUE))
+                     sub("^<p>([[:print:]]*\\])(</a>)?", "<p>\\1\\2<cite>",
+                         res, useBytes = TRUE)
+                 else if (.bibstyle == "draft")
+                     sub("^<p>([[:print:]]*</B>)", "<p>\\1<cite>", res,
+                         useBytes = TRUE)
+                 else
+                     sub("^<p>", "<p><cite>", res, useBytes = TRUE)
+          res <- vapply(res, function(x) if (grepl("<cite>", x, useBytes=TRUE))
                         paste0(x, "</cite></p>")
                       else  # XData or Set
-                        paste0(x, "</p>"))
+                        paste0(x, "</p>"), "")
         }
         res
     }
@@ -90,7 +101,7 @@ format.BibEntry <- function(x, style = .BibOptions$style, .bibstyle = .BibOption
             unlist(lapply(x, function(y) paste(toBibtex(y), collapse = "\n")))
         }, textVersion = {
             out <- lapply(unclass(x), attr, "textVersion")
-            out[!sapply(out, length)] <- ""
+            out[!vapply(out, length, 0L)] <- ""
             unlist(out)
         }, citation = .format_bibentry_as_citation(x), R = {
           x$.duplicated <- NULL

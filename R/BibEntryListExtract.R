@@ -3,7 +3,7 @@
 #' Operator for extracting BibEntry objects by index.
 #' 
 #' @param x a BibEntry object
-#' @param i numeric indices of entries to exctract, or a character vector of keys corresponding to the entries to be
+#' @param i numeric indices of entries to extract, or a character vector of keys corresponding to the entries to be
 #' extracted.
 #' @param drop logical, should attributes besides class be dropped from result?
 #' @method [[ BibEntry
@@ -34,7 +34,7 @@
   if (is.character(i) && is.null(names(x))) 
     names(x) <- .BibEntry_get_key(x)
   y <- x[i]
-  if (!all(ok <- sapply(y, length) > 0L)) {
+  if (!all(ok <- vapply(y, length, 0L) > 0L)) {
     warning("subscript out of bounds")
     y <- y[ok]
   }

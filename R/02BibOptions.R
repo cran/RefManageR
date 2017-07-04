@@ -40,14 +40,14 @@
 #' \code{\link{sort.BibEntry}}
 #' \item \code{max.names} - numeric; maximum number of names to display before using \dQuote{et al.} when formatting and printing name
 #' list fields.  This is also the minimum number of names that will be displayed if \dQuote{et al.} is used 
-#' (minnames package option in Biblatex) 
+#' (\sQuote{minnames} package option in Biblatex) 
 #' \item \code{no.print.fields} character vector; fields that should not be printed, 
 #' e.g., doi, url, isbn, etc.
 #' \item \code{style} - character string naming the printing style.  Possible values are 
 #' plain text (style \dQuote{text}), BibTeX (\dQuote{Bibtex}), BibLaTeX (\dQuote{Biblatex}),
 #' a mixture of plain text and BibTeX as 
 #' traditionally used for citations (\dQuote{citation}), HTML (\dQuote{html}), 
-#' LaTeX (\dQuote{latex}), \dQuote{markdown}, 
+#' LaTeX (\dQuote{latex}), \dQuote{markdown}, \dQuote{yaml}, 
 #' R code (\dQuote{R}), and a simple copy of the textVersion elements 
 #' (style \dQuote{textVersion}, see \code{\link{BibEntry}})
 #' }
@@ -108,7 +108,8 @@
 #' BibOptions(restore.defaults = TRUE)
 BibOptions <- function(..., restore.defaults = FALSE){
   if (restore.defaults)
-    return(invisible(mapply(assign, .BibOptNames, .Defaults, MoreArgs = list(envir=.BibOptions))))
+    return(invisible(mapply(assign, .BibOptNames, .Defaults,
+                              MoreArgs = list(envir=.BibOptions))))
     
   if (missing(...))
     return(mget(.BibOptNames, envir = .BibOptions))
@@ -130,7 +131,8 @@ BibOptions <- function(..., restore.defaults = FALSE){
     if (any(ind)){
       opts[ind] <- as.logical(opts[ind])
       if (any(is.na(opts[ind])))
-        stop("One of the specified option values should be logical and is not, see ?BibOptions")
+        stop(gettextf("One of the specified option values should be logical %s",
+                        "and is not, see ?BibOptions"))
       names(opts[ind]) <- nom[ind]
     }
       
@@ -140,17 +142,19 @@ BibOptions <- function(..., restore.defaults = FALSE){
   }
 }
 
-.Defaults <- list(match.author='family.name', match.date='year.only', return.ind=FALSE, 
-              merge.fields.to.check = 'key', bib.style = 'numeric', first.inits = TRUE, 
-              dashed = TRUE, sorting = NULL, check.entries = 'error', use.regex = TRUE, 
-              ignore.case = TRUE, max.names = 3, cite.style = "authoryear",
-              longnamesfirst = TRUE, hyperlink = "to.doc", style = "text",
-              super = FALSE, bibpunct = c("(", ")", "[", "]",  ";", ","),
-              no.print.fields = character(0))  
+.Defaults <- list(match.author = 'family.name', match.date = 'year.only',
+                  return.ind = FALSE,  merge.fields.to.check = 'key',
+                  bib.style = 'numeric', first.inits = TRUE, 
+                  dashed = TRUE, sorting = NULL, check.entries = 'error',
+                  use.regex = TRUE,  ignore.case = TRUE, max.names = 3,
+                  cite.style = "authoryear", longnamesfirst = TRUE,
+                  hyperlink = "to.doc", style = "text", super = FALSE,
+                  bibpunct = c("(", ")", "[", "]",  ";", ","),
+                  no.print.fields = character(0))
 .BibOptions <- list2env(.Defaults)
 .BibOptNames <- names(.Defaults)
-.LogicalBibOptNames <- c("return.ind", "first.inits", "dashed", "use.regex", "ignore.case", 
-                         "longnamesfirst", "super")
+.LogicalBibOptNames <- c("return.ind", "first.inits", "dashed", "use.regex",
+                         "ignore.case", "longnamesfirst", "super")
 .cites <- new.env()
 assign("indices", logical(0), .cites)
 assign("labs", character(0), .cites)

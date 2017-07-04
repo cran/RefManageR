@@ -8,6 +8,18 @@ bib <- ReadBib(system.file("Bib", "biblatexExamples.bib",
                            package = "RefManageR"), check = FALSE)
 
 
+test_that("yaml printing with authoryear", {
+    BibOptions(check.entries = FALSE)
+    print(bib[47:92], .opts = list(bib.style = "authoryear",
+                                   sorting = "anyvt", style = "yaml"))
+})
+
+test_that("R style printing with authoryear", {
+    print(bib[1:46], .opts = list(bib.style = "authoryear",
+                                  sorting = "anyt", style = "R"))
+})
+
+
 test_that("addition operator", {
     res <- bib[1:3] + bib[3:4]
     expect_length(res, 4L)
@@ -39,38 +51,42 @@ test_that("head and tail", {
 test_that("open", {
     skip_on_cran()
     skip_on_travis()
-    open(as.BibEntry(citation("RCurl")))  # URL
+    open(as.BibEntry(citation("httr")))  # URL
 
     testbib <- ReadBib(system.file("REFERENCES.bib", package="bibtex"))
     testbib$file <- file.path(R.home("doc/manual"), "R-intro.pdf")
     open(testbib)  # PDF
 
+    ## no error if cannot open
     expect_message(open(testbib, open.field = "eprint"),
-                   "Could not open the specified entry.")  # no error if cannot open
+                   "Could not open the specified entry.")  
 
     open(bib["kastenholz"])  # DOI
     testbib <- BibEntry(bibtype = "Misc", key = "arxiv", eprinttype = "arxiv",
-      eprintclass = "stat.ME", year = 2013, urldate = "2014-02-01", pubstate = "submitted",
-      title = "Something On the {arXiv}", author = "Mathew W. McLean", eprint = "1403.2036")
+                        eprintclass = "stat.ME", year = 2013,
+                        urldate = "2014-02-01", pubstate = "submitted",
+                        title = "Something On the {arXiv}",
+                        author = "Mathew W. McLean", eprint = "1403.2036")
     open(testbib, entry = 1)  # eprint
 })
 
 test_that("c", {
    expect_length(c(bib[1], bib[2]), 2L)
-   expect_warning(c(bib[1], unlist(bib[2])))
+   expect_error(c(bib[1], unlist(bib[2])))
+   expect_is(c(bib[1], NULL), "BibEntry")
 })
 
 test_that("levels", {
-    expect_identical(levels(bib)[["angenendt"]], c("author", "title", "journaltitle", "date",
-                                                   "volume", "pages", "langid", "indextitle",
-                                                   "shorttitle", "annotation"))
-    expect_identical(levels(bib[[1]])[[1]], c("author", "title", "subtitle", "pages",
-                                              "crossref", "langid", "langidopts",
-                                              "indextitle", "annotation"))
+    expect_identical(levels(bib)[["angenendt"]],
+                     c("author", "title", "journaltitle", "date", "volume",
+                       "pages", "langid", "indextitle", "shorttitle",
+                       "annotation"))
+    expect_identical(levels(bib[[1]])[[1]],
+                     c("author", "title", "subtitle", "pages", "crossref",
+                       "langid", "langidopts", "indextitle", "annotation"))
 })
 
 test_that("list extraction", {
     expect_length(bib[[c("westfahl:space", "angenendt")]], 2L)
     expect_length(bib[[6:10]], 5L)
 })
-
