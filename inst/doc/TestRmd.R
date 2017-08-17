@@ -1,3 +1,7 @@
+## ----unload, include = FALSE---------------------------------------------
+## Needed to clear internal package citation list from previous vignette builds
+unloadNamespace("RefManageR")
+
 ## ----setup, include = FALSE, cache = FALSE-------------------------------
 library(RefManageR)
 bib <- ReadBib(system.file("Bib", "biblatexExamples.bib", 

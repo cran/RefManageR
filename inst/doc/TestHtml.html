@@ -74,6 +74,8 @@
 <body>
 <h1>Add Citations to an R HTML Document and Print Bibliography</h1>
 
+
+
 <div class="chunk" id="setup"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">library</span><span class="hl std">(RefManageR)</span>
 <span class="hl std">bib</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">ReadBib</span><span class="hl std">(</span><span class="hl kwd">system.file</span><span class="hl std">(</span><span class="hl str">&quot;Bib&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;biblatexExamples.bib&quot;</span><span class="hl std">,</span>
                            <span class="hl kwc">package</span> <span class="hl std">=</span> <span class="hl str">&quot;RefManageR&quot;</span><span class="hl std">),</span> <span class="hl kwc">check</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
@@ -82,23 +84,22 @@
 </pre></div>
 </div></div>
 <p>
-This is an R HTML document. This is an example of a citation in the text <code class="knitr inline"><a id='cite-loh'></a><a href='#bib-loh'>Loh [Loh92]</a></code>. Now we cite in parentheses <code class="knitr inline">[<a href='http://arxiv.org/abs/math/0307200v3'>BL04</a>, Ch. 2]</code>.  You can change the default options in a setup chunk at the start of the document or at any other point using the <code>BibOptions</code> function or by specifying options as a list in the <code>.opts</code> argument to the cite functions.  For demonstration purposes, we switch back and forth between citation styles here just to show the possibilities.
+This is an R HTML document. This is an example of a citation in the text <code class="knitr inline"><a id='cite-loh'></a><a href='#bib-loh'>Loh (1992)</a></code>. Now we cite in parentheses <code class="knitr inline"><a id='cite-baezonline'></a>(<a href='http://arxiv.org/abs/math/0307200v3'>Baez and Lauda, 2004b</a>, Ch. 2)</code>.  You can change the default options in a setup chunk at the start of the document or at any other point using the <code>BibOptions</code> function or by specifying options as a list in the <code>.opts</code> argument to the cite functions.  For demonstration purposes, we switch back and forth between citation styles here just to show the possibilities.
 </p>
 <p>
-These are reports <code class="knitr inline">Chiu and Chow<sup><a href='#bib-chiu'>[1]</a></sup>; Padhye, Firoiu, and Towsley<sup><a href='#bib-padhye'>[2]</a></sup></code>.  Their hyperlinks go to their entry in the bibliography.
-The link for <code class="knitr inline"><a href='http://tug.ctan.org/tex-archive/info/bibtex/tamethebeast/ttb_en.pdf'>Markey [Mar05]</a></code> will take you to the document in a new window; this is the default, if a link is available (see <code>?open.BibEnty</code>). The following citation has no hyperlink <code class="knitr inline">[Gee85]</code>.  You can also embed plots, for example:
+These are reports <code class="knitr inline"><a id='cite-chiu'></a><a id='cite-padhye'></a>Chiu and Chow<sup><a href='#bib-chiu'>[1]</a></sup>; Padhye, Firoiu, and Towsley<sup><a href='#bib-padhye'>[2]</a></sup></code>.  Their hyperlinks go to their entry in the bibliography.
+The link for <code class="knitr inline"><a id='cite-markey'></a><a href='http://tug.ctan.org/tex-archive/info/bibtex/tamethebeast/ttb_en.pdf'>Markey (2005)</a></code> will take you to the document in a new window; this is the default, if a link is available (see <code>?open.BibEnty</code>). The following citation has no hyperlink <code class="knitr inline">(de
+Geer, 1985)</code>.  
 </p>
-<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(cars)</span>
-</pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></div></div>
 <p>
-I've added a reference to CTAN without citing it.  Now I'm adding a reference from another bibliography (a second <code>BibEntry</code> object) <code class="knitr inline"><a id='cite-serban2013multilevel'></a>(<a href='#bib-serban2013multilevel'>Serban, Staicu, and Carroll, 2013</a>)</code>.  Look at all my Aristotle: <code class="knitr inline">Aristotle<sup><a href='#bib-aristotleanima'>[1]</a></sup>; Aristotle<sup><a href='#bib-aristotlephysics'>[2]</a></sup>; Aristotle<sup><a href='#bib-aristotlepoetics'>[3]</a></sup>; Aristotle<sup><a href='#bib-aristotlerhetoric'>[4]</a></sup></code>.
+I've added a reference to CTAN without citing it.  Now I'm adding a reference from another bibliography (a second <code>BibEntry</code> object) <code class="knitr inline"><a id='cite-serban2013multilevel'></a>(<a href='#bib-serban2013multilevel'>Serban, Staicu, and Carroll, 2013</a>)</code>.  Look at all my Aristotle: <code class="knitr inline"><a id='cite-aristotleanima'></a><a id='cite-aristotlephysics'></a><a id='cite-aristotlepoetics'></a><a id='cite-aristotlerhetoric'></a>Aristotle<sup><a href='#bib-aristotleanima'>[1]</a></sup>; Aristotle<sup><a href='#bib-aristotlephysics'>[2]</a></sup>; Aristotle<sup><a href='#bib-aristotlepoetics'>[3]</a></sup>; Aristotle<sup><a href='#bib-aristotlerhetoric'>[4]</a></sup></code>.  Below is the <code>R</code> logo.
 </p>
-<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(cars)</span>
-</pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div></div>
 <p>
-Some papers on the arXiv are <code class="knitr inline"><a href='http://arxiv.org/abs/math/0307200v3'>Baez and Lauda (2004a)</a>; <a href='http://arxiv.org/abs/math/0307200v3'>Baez and Lauda (2004b)</a>; <a href='http://arxiv.org/abs/hep-th/9603067'>Itzhaki (1996)</a>; <a href='http://arxiv.org/abs/1008.2849v1'>Wassenberg and Sanders (2010)</a></code>.
+  <img src="https://cran.r-project.org/Rlogo.svg" alt="R logo" width="561" height="724"> 
+</p>
+
+<p>
+Some papers on the arXiv are <code class="knitr inline"><a id='cite-baezarticle'></a><a id='cite-itzhaki'></a><a id='cite-wassenberg'></a><a href='http://arxiv.org/abs/math/0307200v3'>Baez and Lauda (2004a)</a>; <a href='http://arxiv.org/abs/math/0307200v3'>Baez and Lauda (2004b)</a>; <a href='http://arxiv.org/abs/hep-th/9603067'>Itzhaki (1996)</a>; <a href='http://arxiv.org/abs/1008.2849v1'>Wassenberg and Sanders (2010)</a></code>.
 </p>
 <h2>References</h2>
 
@@ -164,12 +165,6 @@ Study&rdquo;.
 PhD thesis.
 Uppsala: Uppsala Universitet, 1985.</p>
 
-<p><a id='bib-herrmann'></a><a href="#cite-herrmann"><b>herrmann</b></a>
-W. A. Herrmann, K. Öfele, S. K. Schneider, et al.
-&ldquo;A carbocyclic carbene as an efficient catalyst ligand for C&ndash;C
-coupling reactions&rdquo;.
-In: <em>Angew.~Chem. Int.~Ed.</em> 45.23 (2006), pp. 3859-3862.</p>
-
 <p><a id='bib-itzhaki'></a><a href="#cite-itzhaki"><b>itzhaki</b></a>
 N. Itzhaki.
 <em>Some remarks on 't Hooft's S-matrix for black holes</em>.
@@ -204,7 +199,7 @@ arXiv: <a href="http://arxiv.org/abs/1008.2849v1">1008.2849v1 [cs.DS]</a>.</p>
 
 <h2>More References</h2>
 
-<p><a id='bib-serban2013multilevel'></a><a href="#cite-serban2013multilevel">[SSC13]</a><cite>
+<p><a id='bib-serban2013multilevel'></a><a href="#cite-serban2013multilevel">[1]</a><cite>
 N. Serban, A. M. Staicu and R. J. Carroll.
 &ldquo;Multilevel Cross-Dependent Binary Longitudinal Data&rdquo;.
 In: <em>Biometrics</em> 69.4 (2013), pp. 903&ndash;913.</cite></p>
