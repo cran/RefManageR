@@ -1,3 +1,64 @@
+Changes in Version 1.2.0 (2018-04-24)
+--------------------------------------------------------
+
+NEW FEATURES
+
+* `+.BibEntry` and `merge.BibEntry` gain an argument ignore.case,
+which defaults to `BibOptions()$ignore.case` (`TRUE`) so that case is 
+ignore when checking for duplicate fields (h/t Justin Calabrese #47)
+* Improved warning message when printing entries with unknown 
+LaTeX macros (the entry key is now included). (h/t Justin Calabrese #49)
+* The entry key is now included in warning messages when entries are 
+missing fields and `BibOptions()$check.entries == "warn"` (h/t Justin
+Calabrese #48)
+
+BUG FIXES
+
+* Entries are now only checked once to ensure all required
+  fields are present in `ReadBib`
+
+Changes in Version 1.1.0 (2018-04-02)
+--------------------------------------------------------
+
+* `PrintBibliography` gains parameters "start" and "end"
+to allow for printing only a subset of all cited entries from
+a BibEntry object (h/t Joseph Casillas #45, #46)
+
+
+Changes in Version 1.0.0 (2018-02-19)
+--------------------------------------------------------
+
+* Use https for all links (h/t Katrin Leinweber)
+* Use preferred DOI resovler (h/t Katrin Leinweber)
+* Add support for latex macro ast for asterisks (h/t Melinda Higgins)
+
+Changes in Version 0.14.25 (2017-12-25)
+--------------------------------------------------------
+
+BUG FIXES
+
+* Fix `GetDOIs` to use https
+* Fix download of bibliographic info from DOI in `ReadPDFs`
+
+Changes in Version 0.14.23 (2017-11-12)
+--------------------------------------------------------
+
+BUG FIXES
+
+* Fix writing of BibEntry object to stdout in
+`WriteBib` (h/t Stephane Plaisance)
+* `ReadBib` won't add an attribute "strings" if there
+are none present in read bib file (h/t Stephane Plaisance)
+
+Changes in Version 0.14.21 (2017-09-05)
+--------------------------------------------------------
+
+BUG FIXES
+
+* Fix deletion of temporary file if user supplies a DOI to 
+`ReadCrossRef` (h/t Ben Raymond)
+
+
 Changes in Version 0.14.20 (2017-07-27)
 --------------------------------------------------------
 

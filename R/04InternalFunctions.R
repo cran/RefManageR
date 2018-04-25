@@ -14,20 +14,20 @@
   if (length(rfields) > 0L) {
     ok <- vapply(rfields, function(f) any(f %in% fields), FALSE)
     if (any(!ok)){
-      if (check == 'warn'){
-          warning(sprintf(ngettext(sum(!ok),
-                      "A bibentry of bibtype %s has to specify the field: %s",
+      key <- attr(x, "key")
+      if (is.null(key))
+          key <- ""
+      else
+          key <- paste0(key, ": ")
+      msg <- sprintf(ngettext(sum(!ok),
+                      "%sA bibentry of bibtype %s has to specify the field: %s",
                       "A bibentry of bibtype %s has to specify the fields: %s"),
-                      sQuote(bibtype), paste(rfields[!ok], collapse = ", ")),
-                  domain = NA)
+                      key, sQuote(bibtype), paste(rfields[!ok], collapse = ", "))
+      if (check == 'warn'){
+          warning(msg, domain = NA, call. = FALSE)
         return(NULL)
-      }else{
-          stop(sprintf(ngettext(sum(!ok),
-                     "A bibentry of bibtype %s has to specify the field: %s",
-                     "A bibentry of bibtype %s has to specify the fields: %s"),
-                     sQuote(bibtype), paste(rfields[!ok], collapse = ", ")),
-               domain = NA)
-      }
+      }else
+          stop(msg, domain = NA)
     }
   }
 }
@@ -676,7 +676,7 @@ ProcessArxiv <- function(arxinfo){
     regm <- regmatches(arxinfo, m)
     res$eprint <- regm[[1]][2]
   }
-  res$url <- paste0('http://arxiv.org/abs/', res$eprint)
+  res$url <- paste0('https://arxiv.org/abs/', res$eprint)
   res
 }
 
@@ -723,7 +723,7 @@ ProcessArxiv <- function(arxinfo){
 ##                                                useBytes = TRUE))[[1]][2])){
 ##     res$eprinttype <- "arxiv"
 ##     res$eprint <- eprint
-##     res$url <- paste0("http://arxiv.org/abs/", eprint)
+##     res$url <- paste0("https://arxiv.org/abs/", eprint)
 ##     attr(res, "entry") <- "misc"
 ##   }else{
 ##     if (is.na(numbers) || numbers == "" || as.character(year) == numbers){
@@ -797,7 +797,7 @@ ParseGSCitesNew <- function(title, author, year, src, cited_by, encoding,
                                                useBytes = TRUE))[[1]][2])){
     res$eprinttype <- "arxiv"
     res$eprint <- eprint
-    res$url <- paste0("http://arxiv.org/abs/", eprint)
+    res$url <- paste0("https://arxiv.org/abs/", eprint)
     attr(res, "entry") <- "misc"
   }else{
     if (is.na(numbers) || numbers == "" || as.character(year) == numbers){
@@ -940,14 +940,22 @@ MakeBibEntry <- function(x, to.person = TRUE){
   if (type != 'set')
     tdate <- ProcessDates(y)
 
-  tryCatch(BibEntry(bibtype = type, key = key, dateobj = tdate, other = y),
+  withCallingHandlers(tryCatch(BibEntry(bibtype = type, key = key,
+                                        dateobj = tdate, other = y),
             error = function(e){
-                message(sprintf("Ignoring entry '%s' %sbecause:\n\t%s\n",
+                message(sprintf("Ignoring entry '%s' %sbecause:\n\t%s",
                          key,
                          line.no,
-                         conditionMessage(e)))
+                         conditionMessage(e)), domain = NA)
                 NULL
-                })
+            }),
+           warning = function(w){
+                warning(sprintf("%s %s:\n\t%s",
+                         key,
+                         line.no,
+                         conditionMessage(w)), domain = NA, call. = FALSE)
+                invokeRestart("muffleWarning")
+            })
 }
 
 #' @keywords internal
@@ -1162,7 +1170,12 @@ CreateBibKey <- function(ti, au, yr){
 
 #' @keywords internal
 MakeKeysUnique <- function(bib){
-    if (length(bib))
-        bib$key <- make.unique(names(bib), sep = ":")
+    if (length(bib)){
+        keys <- make.unique(names(bib), sep = ":")
+        bib <- unclass(bib)
+        for (i in seq_along(bib))
+            attr(bib[[i]], "key") <- keys[i]
+        class(bib) <- c("BibEntry", "bibentry")
+    }
     bib
 }

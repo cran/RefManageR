@@ -1,5 +1,5 @@
 Package: RefManageR
-Version: 0.14.20
+Version: 1.2.0
 Title: Straightforward 'BibTeX' and 'BibLaTeX' Bibliography Management
 Authors@R: person(c("Mathew", "W."), "McLean", role = c("aut", "cre"),
     email = "mathew.w.mclean@gmail.com")
@@ -20,7 +20,7 @@ Description: Provides tools for importing and working with bibliographic
 License: GPL-2 | GPL-3 | BSD_3_clause + file LICENSE
 Imports: xml2, jsonlite, utils, plyr, tools, httr, bibtex (>= 0.4.1),
         lubridate (>= 1.5.0), stringr, methods
-Suggests: knitr, testthat,
+Suggests: knitr, testthat
 Encoding: UTF-8
 Depends: R (>= 3.0)
 VignetteBuilder: knitr
@@ -28,6 +28,6 @@ BugReports: https://github.com/ropensci/RefManageR/issues
 URL: https://github.com/ropensci/RefManageR/
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-08-17 17:48:18 UTC; root
+Packaged: 2018-04-25 16:43:52 UTC; root
 Repository: CRAN
-Date/Publication: 2017-08-17 23:35:34 UTC
+Date/Publication: 2018-04-25 17:14:14 UTC

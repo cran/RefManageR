@@ -222,8 +222,8 @@ GetFormatFunctions <- function(docstyle = "text", DateFormatter){
 
           if (eprinttype %in% c("arxiv", "pubmed", "jstor")){
             base.url <- switch(eprinttype,
-                               jstor = "http://www.jstor.org/stable/",
-                               arxiv = "http://arxiv.org/abs/",
+                               jstor = "https://www.jstor.org/stable/",
+                               arxiv = "https://arxiv.org/abs/",
                                pubmed = paste0("https://eutils.ncbi.nlm.nih.",
                                                "gov/entrez/eutils/",
                                                "elink.fcgi?dbfrom=pubmed&",
@@ -268,9 +268,9 @@ GetFormatFunctions <- function(docstyle = "text", DateFormatter){
 
           if (eprinttype %in% c("arxiv", "pubmed", "jstor")){
             base.url <- switch(eprinttype,
-                               jstor = "http://www.jstor.org/stable/",
-                               arxiv = "http://arxiv.org/abs/",
-                               pubmed = paste0("http://eutils.ncbi.nlm.nih.",
+                               jstor = "https://www.jstor.org/stable/",
+                               arxiv = "https://arxiv.org/abs/",
+                               pubmed = paste0("https://eutils.ncbi.nlm.nih.",
                                                "gov/entrez/eutils/",
                                                "elink.fcgi?dbfrom=pubmed&",
                                                "cmd=prlinks&retmode=ref&id="),
@@ -363,12 +363,12 @@ GetFormatFunctions <- function(docstyle = "text", DateFormatter){
     fmtISRN <- label(prefix = 'ISRN: ', suffix = '.')
     fmtDOI <- switch(docstyle, html = function(doi){
                             if (length(doi)){
-                              paste0("DOI: \\href{http://dx.doi.org/",
+                              paste0("DOI: \\href{https://doi.org/",
                                      doi, "}{", doi, "}.")
                             }
                           }, markdown = function(doi){
                               if (length(doi)){
-                                paste0("DOI: [", doi, "](http://dx.doi.org/",
+                                paste0("DOI: [", doi, "](https://doi.org/",
                                        doi, ").")
                               }
                             }, label(prefix = 'DOI: ', suffix = '.'))

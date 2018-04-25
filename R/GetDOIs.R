@@ -12,9 +12,9 @@
 #' @family pubmed
 #' @note Only entries in \code{bib} that do not already contain a value in the
 #' \sQuote{doi} field will be searched for.
-#' @references \url{http://search.crossref.org/help/api}
+#' @references \url{https://search.crossref.org/help/api}
 #' @examples
-#' if (interactive() && !httr::http_error("http://search.crossref.org")){
+#' if (interactive() && !httr::http_error("https://search.crossref.org")){
 #'   BibOptions(check.entries = FALSE, sorting = "none")
 #'   bib <- ReadBib(system.file("Bib", "RJC.bib", package = "RefManageR"))[1:5]
 #'   bib <- GetDOIs(bib)
@@ -31,10 +31,10 @@ GetDOIs <- function(bib){
     headers <- list('Accept' = 'application/json',
                     'Content-Type' = 'application/json')
 
-    ## json.res <- postForm("http://search.crossref.org/links",
+    ## json.res <- postForm("https://search.crossref.org/links",
     ##              .opts = list(postfields = json.bib, httpheader = headers))
     ## json.res <- try(fromJSON(json.res), TRUE)
-    json.res <- httr::POST("http://search.crossref.org/links", body = json.bib,
+    json.res <- httr::POST("https://search.crossref.org/links", body = json.bib,
                            config = list(add_headers = headers),
                            encode = "json")
     status <- status_code(json.res)
@@ -50,7 +50,7 @@ GetDOIs <- function(bib){
         match.str <- paste0(missing.dois.pos[matches], collapse = ", ")
         message(gettextf("Matches for entries at positions %s.",
                        match.str))
-        bib$doi[missing.dois.pos[matches]] <- sub("http://dx.doi.org/", "",
+        bib$doi[missing.dois.pos[matches]] <- sub("https?://(dx\\.)?doi.org/", "",
                                                   vapply(json.res[[1L]], "[[",
                                                          "",
                                                          "doi")[matches],

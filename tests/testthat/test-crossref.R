@@ -6,8 +6,8 @@ context("Crossref")
 
 test_that("GetBibEntryWithDOIs retrieves DOIs", {
     skip_on_cran()
-    if (httr::http_error("http://dx.doi.org/"))
-        skip("Couldn't connect to dx.doi.org")
+    if (httr::http_error("https://doi.org/"))
+        skip("Couldn't connect to doi.org")
 
     dois <- c("10.1016/j.iheduc.2003.11.004", "10.3998/3336451.0004.203")
     out <- GetBibEntryWithDOI(dois)
@@ -19,8 +19,8 @@ test_that("GetBibEntryWithDOIs retrieves DOIs", {
 
 test_that("GetBibEntryWithDOIs continues if some DOIs not found", {
     skip_on_cran()
-    if (httr::http_error("http://dx.doi.org/"))
-        skip("Couldn't connect to dx.doi.org")
+    if (httr::http_error("https://doi.org/"))
+        skip("Couldn't connect to doi.org")
 
     dois <- c("NotADOI", "10.3998/3336451.0004.203")
     out <- GetBibEntryWithDOI(dois)
@@ -34,7 +34,7 @@ test_that("GetBibEntryWithDOIs continues if some DOIs not found", {
 
 test_that("GetDOIs retrieves DOIs", {
     skip_on_cran()
-    if (httr::http_error("http://search.crossref.org"))
+    if (httr::http_error("https://search.crossref.org"))
         skip("Couldn't connect to search.crossref.org")
 
     BibOptions(check.entries = FALSE, sorting = "none")
@@ -54,7 +54,7 @@ old.opts <- BibOptions(check.entries = FALSE)
 
 test_that("ReadCrossRef *old* API retrieves queries successfully", {
     skip_on_cran()
-    if (httr::http_error("http://search.crossref.org/"))
+    if (httr::http_error("https://search.crossref.org/"))
         skip("Couldn't connect to search.crossref.org")
 
     BibOptions(check.entries = FALSE, sorting = "none")    
@@ -68,7 +68,7 @@ test_that("ReadCrossRef *old* API retrieves queries successfully", {
 
 test_that("ReadCrossRef *new* API retrieves queries successfully", {
     skip_on_cran()
-    if (httr::http_error("http://search.crossref.org/"))
+    if (httr::http_error("https://search.crossref.org/"))
         skip("Couldn't connect to search.crossref.org")
 
     BibOptions(check.entries = FALSE, sorting = "none")    
@@ -82,7 +82,7 @@ test_that("ReadCrossRef *new* API retrieves queries successfully", {
 
 test_that("ReadCrossRef *old* API min.relevance and verbose args work", {
     skip_on_cran()
-    if (httr::http_error("http://search.crossref.org/"))
+    if (httr::http_error("https://search.crossref.org/"))
         skip("Couldn't connect to search.crossref.org")
 
     BibOptions(check.entries = FALSE, sorting = "none")    
@@ -96,7 +96,7 @@ test_that("ReadCrossRef *old* API min.relevance and verbose args work", {
 
 test_that("ReadCrossRef works when given DOI", {
     skip_on_cran()
-    if (httr::http_error("http://search.crossref.org/"))
+    if (httr::http_error("https://search.crossref.org/"))
         skip("Couldn't connect to search.crossref.org")
 
     out <- ReadCrossRef(query = "10.1007/978-1-4899-4477-1_13", limit = 2,

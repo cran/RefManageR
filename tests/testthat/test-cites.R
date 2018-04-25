@@ -33,12 +33,12 @@ test_that("citation with markdown link", {
 test_that("citation with url link", {
     expect_identical(AutoCite(bib, "baez/online", before = "e.g., "),
                      paste0("<a name=cite-baezonline></a>[e.g., [2]",
-                     "(http://arxiv.org/abs/math/0307200v3)]"))
+                     "(https://arxiv.org/abs/math/0307200v3)]"))
 })
 
 test_that("citing twice uses correct number", {
     expect_identical(AutoCite(bib, "baez/online", before = "e.g., "),
-                     "[e.g., [2](http://arxiv.org/abs/math/0307200v3)]")
+                     "[e.g., [2](https://arxiv.org/abs/math/0307200v3)]")
 })
 
 test_that("citing entry with a shorthand field works", {
@@ -88,13 +88,13 @@ test_that("citation with several references with urls", {
                           "<a name=cite-itzhaki></a>",
                           "<a name=cite-wassenberg></a>",
                           "[Baez and Lauda [12]]",
-                          "(http://arxiv.org/abs/math/0307200v3); ",
+                          "(https://arxiv.org/abs/math/0307200v3); ",
                           "[Baez and Lauda [2]]",
-                          "(http://arxiv.org/abs/math/0307200v3); ",
+                          "(https://arxiv.org/abs/math/0307200v3); ",
                           "[Itzhaki [13]]",
-                          "(http://arxiv.org/abs/hep-th/9603067); ",
+                          "(https://arxiv.org/abs/hep-th/9603067); ",
                           "[Wassenberg and Sanders",
-                          " [14]](http://arxiv.org/abs/1008.2849v1)"))
+                          " [14]](https://arxiv.org/abs/1008.2849v1)"))
 })
 
 test_that("PrintBibliography", {
@@ -130,6 +130,8 @@ test_that("switching cite.style and citing reference again", {
     expect_true(grepl("\\[KU\\]", Citet(bib, author = "Kant")))
 })
 
+bib2 <- ReadBib(system.file("Bib", "RJC.bib",
+                            package = "RefManageR"))[seq_len(20)]
 
 test_that("PrintBibliography when multiple BibEntry objects cited", {
     ##    rm(list=ls(all=TRUE))
@@ -145,8 +147,6 @@ test_that("PrintBibliography when multiple BibEntry objects cited", {
                                 package = "RefManageR"), check = FALSE)
     AutoCite(bib, author = "kant")
 
-    bib2 <- ReadBib(system.file("Bib", "RJC.bib",
-                                package = "RefManageR"))[seq_len(20)]
     if (!length(bib2))
         skip("Couldn't load RCJ.bib'")
     AutoCite(bib2, title = "binary longitudinal data")
@@ -154,4 +154,20 @@ test_that("PrintBibliography when multiple BibEntry objects cited", {
                                        .opts = list(cite.style = "numeric")))
     ## only one entry is printed (so that no blank lines separating entries)
     expect_false(any(grepl("^$", bibtext)))
+})
+
+test_that("PrintBibliography start and stop parameters", {
+    clear.cites()
+
+    if (!length(bib2))
+        skip("Couldn't load RCJ.bib'")
+    Citet(bib2, author = "Xun")    
+    AutoCite(bib2, title = "binary longitudinal data")
+    bibtext <- capture.output(PrintBibliography(bib2, end = 1,
+                                       .opts = list(cite.style = "numeric")))
+    ## only one entry is printed (so that no blank lines separating entries)
+    expect_false(any(grepl("^$", bibtext)))
+    bibtext <- capture.output(PrintBibliography(bib2, start = 2,
+                                       .opts = list(cite.style = "numeric")))
+    expect_false(any(grepl("^$", bibtext)))    
 })
