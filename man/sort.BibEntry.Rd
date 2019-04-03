@@ -5,7 +5,8 @@
 \title{Sort a BibEntry Object}
 \usage{
 \method{sort}{BibEntry}(x, decreasing = FALSE,
-  sorting = BibOptions()$sorting, .bibstyle = BibOptions()$bib.style, ...)
+  sorting = BibOptions()$sorting, .bibstyle = BibOptions()$bib.style,
+  ...)
 }
 \arguments{
 \item{x}{an object of class BibEntry}

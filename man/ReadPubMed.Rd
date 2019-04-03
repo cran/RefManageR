@@ -64,3 +64,4 @@ Other pubmed: \code{\link{GetDOIs}},
   \code{\link{GetPubMedRelated}},
   \code{\link{LookupPubMedID}}, \code{\link{ReadCrossRef}}
 }
+\concept{pubmed}

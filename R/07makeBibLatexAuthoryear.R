@@ -142,25 +142,25 @@ MakeAuthorYear <- function(docstyle = "text"){
         out <- shortNameLF(res[1L])
         if (nnames == 2L){
           if (max.n < 2L){
-            out <- paste0(out, ', et al.')
+            out <- paste0(out, ' et al.')
           }else{
-            out <- paste(out, shortName(res[-1L]), sep = ' and ') 
+            out <- paste(out, shortName(res[-1L]), sep = ' and ')
           }
         }else if (nnames > 2L){
           if (nnames > max.n){
             if (max.n <= 1L){
-              out <- paste0(out, ', et al.')
+              out <- paste0(out, ' et al.')
             }else{
                 out <- paste0(paste(out, paste0(vapply(res[2L:max.n],
                                                        shortName, ""),
                                                 collapse = ", "), sep = ', '),
-                              ', et al.')    
+                              ', et al.')
             }
           }else{
               out <- paste(paste(out, paste0(vapply(res[-c(1L, length(res))],
                                                     shortName, ""),
-                                             collapse = ", "), sep = ', '),  
-                         shortName(res[length(res)]), sep = ' and ')
+                                             collapse = ", "), sep = ', '),
+                         shortName(res[length(res)]), sep = ', and ')
           }
         }
       }
@@ -717,7 +717,7 @@ MakeAuthorYear <- function(docstyle = "text"){
       }
     }
 
-    formatReport <- function(paper){
+    formatReport <- function(paper, type = NULL){
         collapse(c(fmtBAuthor(paper), fmtDate(attr(paper, 'dateobj'),
                                               paper$.index),
                    fmtBTitle(paper$title, paper$subtitle),
@@ -735,7 +735,7 @@ MakeAuthorYear <- function(docstyle = "text"){
                ))    
     }
 
-    formatThesis <- function(paper){
+    formatThesis <- function(paper, type = NULL){
         collapse(c(fmtBAuthor(paper), fmtDate(attr(paper, 'dateobj'),
                                               paper$.index), 
                    fmtIBTitle(paper$title, paper$subtitle, FALSE),

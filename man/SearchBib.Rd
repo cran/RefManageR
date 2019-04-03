@@ -3,7 +3,6 @@
 \name{[.BibEntry}
 \alias{[.BibEntry}
 \alias{SearchBib}
-\alias{[.BibEntry}
 \title{Search BibEntry objects by field}
 \usage{
 \method{[}{BibEntry}(x, i, j, ..., drop = FALSE)
@@ -126,6 +125,7 @@ Other operators: \code{\link{$.BibEntry}},
   \code{\link{[<-.BibEntry}}, \code{\link{[[.BibEntry}},
   \code{\link{[[<-.BibEntry}}, \code{\link{c.BibEntry}}
 }
+\concept{operators}
 \keyword{database}
 \keyword{list}
 \keyword{manip}

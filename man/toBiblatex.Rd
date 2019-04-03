@@ -4,7 +4,6 @@
 \alias{toBiblatex}
 \alias{toBibtex.BibEntry}
 \alias{toBibtex}
-\alias{toBibtex.BibEntry}
 \title{Convert BibEntry objects to BibTeX or BibLaTeX}
 \usage{
 toBiblatex(object, ...)

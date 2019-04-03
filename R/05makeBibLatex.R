@@ -200,14 +200,14 @@ MakeBibLaTeX <- function(docstyle = "text", authortitle = FALSE) {
       }
       if (nnames == 2L){
         if (max.n < 2L){
-          out <- paste0(out, ', et al.')
+          out <- paste0(out, ' et al.')
         }else{
           out <- paste(out, shortName(res[-1L]), sep = ' and ')
         }
       }else if (nnames > 2L){
         if (nnames > max.n){
           if (max.n <= 1L){
-            out <- paste0(out, ', et al.')
+            out <- paste0(out, ' et al.')
           }else{
               out <- paste0(paste(out, paste0(vapply(res[2L:max.n],
                                                      shortName, ""),
@@ -218,7 +218,7 @@ MakeBibLaTeX <- function(docstyle = "text", authortitle = FALSE) {
             out <- paste(paste(out, paste0(vapply(res[-c(1L, length(res))],
                                                   shortName, ""),
                                            collapse = ", "), sep = ', '),
-                       shortName(res[length(res)]), sep = ' and ')
+                       shortName(res[length(res)]), sep = ', and ')
         }
       }
     }

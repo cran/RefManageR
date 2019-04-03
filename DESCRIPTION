@@ -1,9 +1,9 @@
 Package: RefManageR
-Version: 1.2.0
+Version: 1.2.12
 Title: Straightforward 'BibTeX' and 'BibLaTeX' Bibliography Management
 Authors@R: person(c("Mathew", "W."), "McLean", role = c("aut", "cre"),
-    email = "mathew.w.mclean@gmail.com")
-Author: Mathew W. McLean [aut, cre]
+    email = "mathew.w.mclean@gmail.com",
+    comment = c(ORCID = "0000-0002-7891-9645"))
 Maintainer: Mathew W. McLean <mathew.w.mclean@gmail.com>
 Description: Provides tools for importing and working with bibliographic
     references. It greatly enhances the 'bibentry' class by providing a class
@@ -20,14 +20,15 @@ Description: Provides tools for importing and working with bibliographic
 License: GPL-2 | GPL-3 | BSD_3_clause + file LICENSE
 Imports: xml2, jsonlite, utils, plyr, tools, httr, bibtex (>= 0.4.1),
         lubridate (>= 1.5.0), stringr, methods
-Suggests: knitr, testthat
+Suggests: knitr, testthat,
 Encoding: UTF-8
 Depends: R (>= 3.0)
 VignetteBuilder: knitr
 BugReports: https://github.com/ropensci/RefManageR/issues
 URL: https://github.com/ropensci/RefManageR/
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2018-04-25 16:43:52 UTC; root
+Packaged: 2019-04-03 06:30:57 UTC; mathew
+Author: Mathew W. McLean [aut, cre] (<https://orcid.org/0000-0002-7891-9645>)
 Repository: CRAN
-Date/Publication: 2018-04-25 17:14:14 UTC
+Date/Publication: 2019-04-03 07:40:14 UTC

@@ -3,15 +3,10 @@
 \name{Cite}
 \alias{Cite}
 \alias{PrintBibliography}
-\alias{PrintBibliography}
 \alias{TextCite}
 \alias{AutoCite}
 \alias{Citep}
 \alias{Citet}
-\alias{Citep}
-\alias{AutoCite}
-\alias{Citet}
-\alias{TextCite}
 \alias{NoCite}
 \title{Cite a BibEntry object in text and print all citations}
 \usage{

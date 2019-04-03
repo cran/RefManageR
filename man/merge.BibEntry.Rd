@@ -3,7 +3,6 @@
 \name{+.BibEntry}
 \alias{+.BibEntry}
 \alias{merge.BibEntry}
-\alias{+.BibEntry}
 \title{Merge two BibEntry objects while discarding duplicates}
 \usage{
 \method{+}{BibEntry}(e1, e2)
@@ -85,4 +84,5 @@ Other operators: \code{\link{$.BibEntry}},
 \author{
 McLean, M. W. \email{mathew.w.mclean@gmail.com}
 }
+\concept{operators}
 \keyword{methods}

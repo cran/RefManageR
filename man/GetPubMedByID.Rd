@@ -40,4 +40,5 @@ Other pubmed: \code{\link{GetDOIs}},
   \code{\link{LookupPubMedID}}, \code{\link{ReadCrossRef}},
   \code{\link{ReadPubMed}}
 }
+\concept{pubmed}
 \keyword{database}

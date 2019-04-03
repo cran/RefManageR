@@ -35,4 +35,5 @@ Other operators: \code{\link{$.BibEntry}},
   \code{\link{[.BibEntry}}, \code{\link{[<-.BibEntry}},
   \code{\link{[[.BibEntry}}, \code{\link{[[<-.BibEntry}}
 }
+\concept{operators}
 \keyword{methods}

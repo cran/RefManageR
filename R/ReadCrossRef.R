@@ -36,10 +36,14 @@
 #' CrossRef; when \code{use.old.api = FALSE}, the query HTTP request is parsed to create
 #' the \code{BibEntry} object (i.e. there are less HTTP requests when using the new API).
 #'
-#' CrossRef assigns a score between 0 and 100 based on how relevant a reference seems
-#' to be to your query.  The \emph{old} API documentation warns that while false
-#' negatives are unlikely, the search can be prone to false positives.  Hence, setting
-#' \code{min.revelance} to a high value may be necessary if \code{use.old.api = TRUE}.
+#' CrossRef assigns a score between 0 and 100 based on how relevant a
+#' reference seems to be to your query.  The \emph{old} API
+#' documentation warns that while false negatives are unlikely, the
+#' search can be prone to false positives.  Hence, setting
+#' \code{min.revelance} to a high value may be necessary if
+#' \code{use.old.api = TRUE}. In some instances with the old API, no
+#' score is returned, if this happens, the entries are added with a
+#' message indicating that no score was available.
 #'
 #' Possible values for the \emph{names} in \code{filter} are \code{"has-funder"},
 #' \code{"funder"}, \code{"prefix"}, \code{"member"}, \code{"from-index-date"},
@@ -143,23 +147,36 @@ ReadCrossRef <- function(query = "", filter = list(), limit = 5, offset = 0,
     }
 
     if (num.res > 0L){
-        if (!use.old.api && is.na(.doi)){
+        if (verbose)
+            makeVerboseMessage <- function(name, score){
+                if (!is.null(score))
+                    gettextf("including the following entry %s%s:\n%s",
+                                     "with relevancy score ",
+                                     name,
+                                     score)
+                else
+                    gettextf("the following entry will be included, but its %s:\n%s",
+                                     "relevancy score was not available ",
+                                     name)
+            }
+        if (!use.old.api && !nzchar(.doi)){
           res <- lapply(fromj, ParseCrossRef)
-          good <- which(vapply(res, function(e){
-              good <- e$score >= min.relevance
+          good <- vapply(res, function(e){
+              good <- is.null(e$score) || e$score >= min.relevance
               if (good && verbose)
-                message(gettextf("including the following entry %s%s:\n%s",
-                                 "with relevancy score ",
-                                  e$title, e$score[[i]]))
+                message(makeVerboseMessage(e$title, e$score[[i]]))
+
               good
-          }, FALSE))
-          res <- res[good]
-          if (!length(res)){
+          }, FALSE)
+
+          if (!any(good)){
               message("no results with relavency score greater than ",
                       gettextf("%s successfully retrieved",
                            sQuote("min.relevance")))
             return()
           }
+
+          res <- res[good]
           class(res) <- c("BibEntry", "bibentry")
           return(res)
       }else{
@@ -174,17 +191,16 @@ ReadCrossRef <- function(query = "", filter = list(), limit = 5, offset = 0,
             entry.str <- "title"
         }
         for(i in 1:num.res){
-          if (fromj[[i]][[score.str]] >= min.relevance){
-              bad <- bad + GetCrossRefBibTeX(paste0(if (!use.old.api)
-                                                        "https://doi.org/",
-                                                    fromj[[i]][[doi.str]]),
-                                             temp.file)
-              if (verbose)
-                  message(gettextf("including the following entry %s%s:\n%s",
-                                   "with relevancy score ",
-                                   fromj[[i]][[entry.str]],
-                                   fromj[[i]][[score.str]]))
+            score <- fromj[[i]][[score.str]]
+            doi.url <- fromj[[i]][[doi.str]]
+            if (!grepl("https?://(dx\\.)?doi.org/", doi.url))
+                doi.url <- paste0("https://doi.org/", doi.url)
 
+            if (is.null(score) || score >= min.relevance){
+                bad <- bad + GetCrossRefBibTeX(doi.url,
+                                               temp.file)
+                if (verbose)
+                    message(makeVerboseMessage(fromj[[i]][[entry.str]], score))
           }
         }
       }  # end else for old API processing
