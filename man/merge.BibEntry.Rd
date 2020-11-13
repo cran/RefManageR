@@ -7,9 +7,13 @@
 \usage{
 \method{+}{BibEntry}(e1, e2)
 
-\method{merge}{BibEntry}(x, y,
+\method{merge}{BibEntry}(
+  x,
+  y,
   fields.to.check = BibOptions()$merge.fields.to.check,
-  ignore.case = BibOptions()$ignore.case, ...)
+  ignore.case = BibOptions()$ignore.case,
+  ...
+)
 }
 \arguments{
 \item{e1}{BibEntry object}
@@ -42,44 +46,52 @@ and keys are ensured to be unique.
 \code{merge} and \code{+} simply provide different interfaces for merging.
 }
 \examples{
-file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
-bib <- suppressMessages(ReadBib(file.name))
-bib1 <- bib[seq_len(44)]
-bib2 <- bib[45:length(bib)]
+if (requireNamespace("bibtex")) {
+    file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
+    bib <- suppressMessages(ReadBib(file.name))
+    bib1 <- bib[seq_len(44)]
+    bib2 <- bib[45:length(bib)]
 
-## The following is FALSE because the parent entry of one entry in bib1
-##   is in bib2, so the child entry is expanded in the BibEntry object
-##   returned by `[` to include the fields inherited from the dropped parent
-identical(merge(bib1, bib2, 'all'), bib)
-toBiblatex(bib1[[1L]])
-toBiblatex(bib[[1L]])
+    ## The following is FALSE because the parent entry of one entry in bib1
+    ##   is in bib2, so the child entry is expanded in the BibEntry object
+    ##   returned by `[` to include the fields inherited from the dropped parent
+    identical(merge(bib1, bib2, 'all'), bib)
+    toBiblatex(bib1[[1L]])
+    toBiblatex(bib[[1L]])
 
-## Alternatively, the operator `[[` for BibEntry objects does not expand
-##   cross references
-bib1 <- bib[[seq_len(44)]]
-bib2 <- bib[[45:length(bib)]]
-identical(merge(bib1, bib2, 'all'), bib)
+    ## Alternatively, the operator `[[` for BibEntry objects does not expand
+    ##   cross references
+    bib1 <- bib[[seq_len(44)]]
+    bib2 <- bib[[45:length(bib)]]
+    identical(merge(bib1, bib2, 'all'), bib)
 
-## Not strict enough
-invisible(merge(bib1, bib2, c('title', 'date')))
+    ## Not strict enough
+    invisible(merge(bib1, bib2, c('title', 'date')))
+ }
 
 ## New publications of R.J. Carroll from Google Scholar and Crossref
 \dontrun{
-bib1 <- ReadGS(scholar.id = "CJOHNoQAAAAJ", limit = '10', sort.by.date = TRUE)
-bib2 <- ReadCrossRef(query = "rj carroll", limit = 10, sort = "relevance",
-  min.relevance = 80)
-oldopt <- BibOptions(merge.fields.to.check = "title")
-rjc.new.pubs <- bib1 + bib2
-BibOptions(oldopt)
+if (requireNamespace("bibtex")) {
+    bib1 <- ReadGS(scholar.id = "CJOHNoQAAAAJ", limit = '10', sort.by.date = TRUE)
+    bib2 <- ReadCrossRef(query = "rj carroll", limit = 10, sort = "relevance",
+      min.relevance = 80)
+    oldopt <- BibOptions(merge.fields.to.check = "title")
+    rjc.new.pubs <- bib1 + bib2
+    BibOptions(oldopt)
+}
 }
 }
 \seealso{
 \code{\link{duplicated}}, \code{\link{unique}}
 
-Other operators: \code{\link{$.BibEntry}},
-  \code{\link{$<-.BibEntry}}, \code{\link{[.BibEntry}},
-  \code{\link{[<-.BibEntry}}, \code{\link{[[.BibEntry}},
-  \code{\link{[[<-.BibEntry}}, \code{\link{c.BibEntry}}
+Other operators: 
+\code{\link{$.BibEntry}()},
+\code{\link{$<-.BibEntry}()},
+\code{\link{[.BibEntry}()},
+\code{\link{[<-.BibEntry}()},
+\code{\link{[[.BibEntry}()},
+\code{\link{[[<-.BibEntry}()},
+\code{\link{c.BibEntry}()}
 }
 \author{
 McLean, M. W. \email{mathew.w.mclean@gmail.com}

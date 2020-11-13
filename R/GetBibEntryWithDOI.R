@@ -10,7 +10,7 @@
 #' @return an object of class BibEntry.
 #' @export
 #' @details
-#' The bibliographic information returned by the search of the \url{https://doi.org}
+#' The bibliographic information returned by the search of the \url{https://doi.org/}
 #' API is temporarily
 #' written to a file and then read back into \code{R} and return as a
 #' \code{BibEntry} object.
@@ -23,6 +23,15 @@
 #'   GetBibEntryWithDOI(c("10.1016/j.iheduc.2003.11.004", "10.3998/3336451.0004.203"))
 GetBibEntryWithDOI <- function(doi, temp.file=tempfile(fileext = '.bib'),
                                delete.file = TRUE){
+  if (!requireNamespace("bibtex")){
+    message("Sorry this feature currently cannot be used without the ",
+            dQuote("bibtex"), " package installed.\nPlease install from ",
+            "GitHub using the ", dQuote("remotes"),
+            " (or ", dQuote("devtools"), ") package:\n\n",
+            "remotes::install_github(\"ROpenSci/bibtex\")")
+    return(invisible())
+  }
+
   file.create(temp.file)
   on.exit(if (delete.file && file.exists(temp.file)) file.remove(temp.file))
   successes <- logical(length(doi))
@@ -54,7 +63,7 @@ GetBibEntryWithDOI <- function(doi, temp.file=tempfile(fileext = '.bib'),
                     temp.file))
 
     bib.res$url <- vapply(bib.res$url, function(x) if (!is.null(x))
-                                                 URLdecode(x), "") 
+                                                 URLdecode(x), "")
 
     return(bib.res)
   }

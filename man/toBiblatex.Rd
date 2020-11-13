@@ -8,8 +8,12 @@
 \usage{
 toBiblatex(object, ...)
 
-\method{toBibtex}{BibEntry}(object, note.replace.field = c("urldate",
-  "pubsate", "addendum"), extra.fields = NULL, ...)
+\method{toBibtex}{BibEntry}(
+  object,
+  note.replace.field = c("urldate", "pubsate", "addendum"),
+  extra.fields = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{an object of class BibEntry to be converted}
@@ -70,10 +74,12 @@ BibLaTeX entry types that are not supported by bibtex are converted by toBibtex 
 }
 }
 \examples{
-file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
-bib <- suppressMessages(ReadBib(file.name))
-toBiblatex(bib[70:72])
-toBibtex(bib[70:72])
+if (requireNamespace("bibtex")) {
+    file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
+    bib <- suppressMessages(ReadBib(file.name))
+    toBiblatex(bib[70:72])
+    toBibtex(bib[70:72])
+}
 }
 \seealso{
 \code{\link{toBibtex}}, \code{\link{BibEntry}}, \code{\link{print.BibEntry}}

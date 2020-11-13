@@ -7,8 +7,14 @@ e
 Creates a Bibtex File from a BibEntry object for use with either BibTeX
 or BibLaTex.}
 \usage{
-WriteBib(bib, file = "references.bib", biblatex = TRUE,
-  append = FALSE, verbose = TRUE, ...)
+WriteBib(
+  bib,
+  file = "references.bib",
+  biblatex = TRUE,
+  append = FALSE,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{bib}{a BibEntry object to be written to file}
@@ -22,9 +28,9 @@ and no conversions of the BibEntry object
 are done; if \code{FALSE} entries will be converted as described in
 \code{\link{toBibtex.BibEntry}}.}
 
-\item{append}{as in \code{\link{write.bib}}}
+\item{append}{as in \code{write.bib} in package \code{bibtex}}
 
-\item{verbose}{as in \code{\link{write.bib}}}
+\item{verbose}{as in \code{write.bib} in package \code{bibtex}}
 
 \item{...}{additional arguments passed to \code{\link{writeLines}}}
 }
@@ -43,22 +49,32 @@ To write the contents of \code{bib} \dQuote{as is}, the argument
 conversion is done as in \code{\link{toBibtex.BibEntry}}.
 }
 \examples{
-bib <- ReadCrossRef(query = '10.1080/01621459.2012.699793')
-## Write bib if no server error
-if (length(bib)){
-  tfile <- tempfile(fileext = ".bib")
-  WriteBib(bib, tfile, biblatex = TRUE)
-  identical(ReadBib(tfile), bib)
-  unlink(tfile)
+if (requireNamespace("bibtex")){
+    bib <- BibEntry("Article", key = "Carroll_2012",
+                    doi = "10.1080/01621459.2012.699793",
+                    year = "2012", month = "sep",
+                    volume = 107, number = 499,
+                    pages = {1166--1177},
+      author = "R. Carroll and A. Delaigle and P. Hall",
+      title = "Deconvolution When Classifying Noisy Data ...",
+      journal = "Journal of the American Statistical Association")
+
+  ## Write bib if no server error and bibtex available
+  if (length(bib)){
+    tfile <- tempfile(fileext = ".bib")
+    WriteBib(bib, tfile, biblatex = TRUE)
+    identical(ReadBib(tfile), bib)
+    unlink(tfile)
+  }
 }
 }
 \seealso{
-\code{\link{write.bib}}, \code{\link{ReadBib}},
+\code{write.bib} in package \code{bibtex}, \code{\link{ReadBib}},
 \code{\link{toBibtex.BibEntry}}, \code{\link{toBiblatex}},
 \code{\link{BibEntry}}
 }
 \author{
-McLean, M. W. based on \code{\link{write.bib}} by Gaujoux, R.
+McLean, M. W. based on \code{write.bib} by Gaujoux, R.
 in package \code{bibtex}.
 }
 \keyword{IO}

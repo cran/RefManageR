@@ -4,8 +4,14 @@
 \alias{ReadPDFs}
 \title{Create bibliographic information from PDF Metadata.}
 \usage{
-ReadPDFs(path, .enc = "UTF-8", recursive = TRUE, use.crossref = TRUE,
-  use.metadata = TRUE, progress = FALSE)
+ReadPDFs(
+  path,
+  .enc = "UTF-8",
+  recursive = TRUE,
+  use.crossref = TRUE,
+  use.metadata = TRUE,
+  progress = FALSE
+)
 }
 \arguments{
 \item{path}{character; path to directory containing pdfs or filename of
@@ -21,7 +27,7 @@ in subdirectories of path be used?}
 
 \item{use.crossref}{logical; should an attempt be made to download bibliographic
 information from CrossRef if
-any Document Object Identifiers (DOIs) are found?}
+any Document Object Identifiers (DOIs) are found? This is only supported if the Suggeseted package \code{bibtex} is found.}
 
 \item{use.metadata}{logical; should the PDF metadata also be used to help
 create entries?}

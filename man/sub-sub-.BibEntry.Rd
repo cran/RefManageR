@@ -30,19 +30,25 @@ when indexing the child entry.
 This method is not affected by the value of \code{BibOptions()$return.ind}.
 }
 \examples{
-file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
-bib <- suppressMessages(ReadBib(file.name))
-bib[[20:21]]
-bib[c("hyman", "loh")]
+if (requireNamespace("bibtex")) {
+    file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
+    bib <- suppressMessages(ReadBib(file.name))
+    bib[[20:21]]
+    bib[c("hyman", "loh")]
 
-## Note this is FALSE because [[ does not inherit from the dropped parent entry while [ does.
-identical(bib[1], bib[[1]])
+    ## Note this is FALSE because [[ does not inherit from the dropped parent entry while [ does.
+    identical(bib[1], bib[[1]])
+}
 }
 \seealso{
-Other operators: \code{\link{$.BibEntry}},
-  \code{\link{$<-.BibEntry}}, \code{\link{+.BibEntry}},
-  \code{\link{[.BibEntry}}, \code{\link{[<-.BibEntry}},
-  \code{\link{[[<-.BibEntry}}, \code{\link{c.BibEntry}}
+Other operators: 
+\code{\link{$.BibEntry}()},
+\code{\link{$<-.BibEntry}()},
+\code{\link{+.BibEntry}()},
+\code{\link{[.BibEntry}()},
+\code{\link{[<-.BibEntry}()},
+\code{\link{[[<-.BibEntry}()},
+\code{\link{c.BibEntry}()}
 }
 \concept{operators}
 \keyword{database}

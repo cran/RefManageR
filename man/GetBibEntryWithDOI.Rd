@@ -4,8 +4,11 @@
 \alias{GetBibEntryWithDOI}
 \title{Lookup a Bibtex entry using a Digital Object Identifier}
 \usage{
-GetBibEntryWithDOI(doi, temp.file = tempfile(fileext = ".bib"),
-  delete.file = TRUE)
+GetBibEntryWithDOI(
+  doi,
+  temp.file = tempfile(fileext = ".bib"),
+  delete.file = TRUE
+)
 }
 \arguments{
 \item{doi}{character vector; DOIs to use to retrieve bibliographic information.}
@@ -23,7 +26,7 @@ an object of class BibEntry.
 Uses the DOI System API to look up bibliography information given a set of DOIs.
 }
 \details{
-The bibliographic information returned by the search of the \url{https://doi.org}
+The bibliographic information returned by the search of the \url{https://doi.org/}
 API is temporarily
 written to a file and then read back into \code{R} and return as a
 \code{BibEntry} object.

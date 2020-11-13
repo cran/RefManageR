@@ -4,9 +4,13 @@
 \alias{ReadBib}
 \title{BibLaTeX/BibTeX .bib file parser}
 \usage{
-ReadBib(file, .Encoding = "UTF-8", header = if (length(preamble))
-  paste(preamble, sep = "\\n") else "", footer = "",
-  check = BibOptions()$check.entries)
+ReadBib(
+  file,
+  .Encoding = "UTF-8",
+  header = if (length(preamble)) paste(preamble, sep = "\\n") else "",
+  footer = "",
+  check = BibOptions()$check.entries
+)
 }
 \arguments{
 \item{file}{string; bib file to parse.}
@@ -37,8 +41,10 @@ Keys will be made unique by calling \code{\link[base]{make.unique}} with
 \code{sep = ":"}.
 }
 \examples{
-file.name <- system.file("Bib", "RJC.bib", package="RefManageR")
-bib <- ReadBib(file.name)
+if (requireNamespace("bibtex")) {
+    file.name <- system.file("Bib", "RJC.bib", package="RefManageR")
+    bib <- ReadBib(file.name)
+}
 }
 \seealso{
 \code{\link[bibtex]{read.bib}} in package \code{bibtex}

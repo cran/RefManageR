@@ -1,7 +1,36 @@
-Changes in Version 1.2.11 (2019-04-02)
+Changes in Version 1.3.0 (2019-10-30)
 ========================================================
 
-* The serial comma is now used in author lists
+* Package `bibtex` moved to Suggests in `DESCRIPTION` due to it
+currently being orphaned on CRAN. Work is underway by the ROpenSci
+team to rectify this. The package can still be installed from
+[GitHub](https://github.com/ROpenSci/bibtex). In the event that
+`bibtex` is not installed, the functions `ReadBib()`,
+`GetBibEntryWithDOI()`, `ReadCrossRef()`, and `ReadZotero()` 
+throw an appropriate message asking the user to install `bibtex` and invisibly
+return `NULL`.
+* The old CrossRef API can no longer be used. If `use.old.api` is set
+  to \code{TRUE} in \code{ReadCrossRef()}, it will be ignored with a warning.
+* `GetDOIs()` had to be removed due to changes to the CrossRef API. It
+  will hopefully return in the next release.
+  
+
+Changes in Version 1.2.13 (2019-04-03)
+========================================================
+
+## BUG FIXES
+
+* When working in single-byte locales, the `print` method for
+`BibEntry` objects is more robust against accented characters being
+converted to incorrect ones when `bib.style = "authoryear"`. 
+Additionally, for this style, a period could be removed
+from the last initial in the first author's given name when
+`first.inits = TRUE`. This has been corrected.
+
+Changes in Version 1.2.12 (2019-04-02)
+========================================================
+
+* The serial comma is now used when formatting name lists
 
 ## BUG FIXES
 

@@ -211,7 +211,12 @@ hr {
 <pre><code class="r">library(RefManageR)
 bib &lt;- ReadBib(system.file(&quot;Bib&quot;, &quot;biblatexExamples.bib&quot;, 
                            package = &quot;RefManageR&quot;), check = FALSE)
-BibOptions(check.entries = FALSE, style = &quot;markdown&quot;, bib.style = &quot;alphabetic&quot;, cite.style = &#39;alphabetic&#39;)
+</code></pre>
+
+<pre><code>## Loading required namespace: bibtex
+</code></pre>
+
+<pre><code class="r">BibOptions(check.entries = FALSE, style = &quot;markdown&quot;, bib.style = &quot;alphabetic&quot;, cite.style = &#39;alphabetic&#39;)
 </code></pre>
 
 <p>This is an R Markdown document. This is an example of a citation in the text <a name=cite-herrmann></a><a href="#bib-herrmann">Herrmann, Ã–fele, Schneider, et al. [Her+06]</a>. Now we cite in parentheses <a name=cite-baezonline></a>[e.g., <a href="https://arxiv.org/abs/math/0307200v3">BL04</a>].  You can change the default options in a setup chunk at the start of the document or at any other point using the <code>BibOptions</code> function or by specifying options as a list in the <code>.opts</code> argument to the cite functions.</p>
@@ -239,66 +244,61 @@ Aristotle. <em>De Anima</em>. Ed. by R. D. Hicks. Cambridge: Cambridge
 University Press, 1907.</p>
 
 <p><a name=bib-aristotlephysics></a><a href="#cite-aristotlephysics">[Ari29]</a>
-Aristotle. <em>Physics</em>. Trans.  by P. H. Wicksteed and F. M.
-Cornford. New York: G. P. Putnam, 1929.</p>
+Aristotle. <em>Physics</em>. Trans.  by P. H. Wicksteed and F. M. Cornford.
+New York: G. P. Putnam, 1929.</p>
 
 <p><a name=bib-aristotlepoetics></a><a href="#cite-aristotlepoetics">[Ari68]</a>
-Aristotle. <em>Poetics</em>. Ed. by D. W. Lucas. Clarendon Aristotle.
-Oxford: Clarendon Press, 1968.</p>
+Aristotle. <em>Poetics</em>. Ed. by D. W. Lucas. Clarendon Aristotle. Oxford:
+Clarendon Press, 1968.</p>
 
-<p><a
-name=bib-aristotlerhetoric></a><a href="#cite-aristotlerhetoric">[Ari77]</a>
-Aristotle. <em>The Rhetoric of Aristotle with a commentary by the
-late Edward Meredith Cope</em>. Ed. by E. M. Cope. With a comment. by
-E. M. Cope. Vol. 3. 3 vols. Cambridge University Press, 1877.</p>
+<p><a name=bib-aristotlerhetoric></a><a href="#cite-aristotlerhetoric">[Ari77]</a>
+Aristotle. <em>The Rhetoric of Aristotle with a commentary by the late
+Edward Meredith Cope</em>. Ed. by E. M. Cope. With a comment. by E. M.
+Cope. Vol. 3. 3 vols. Cambridge University Press, 1877.</p>
 
-<p><a name=bib-baezarticle></a><a href="#cite-baezarticle">[BL04]</a> J. C. Baez
-and A. D. Lauda. &ldquo;Higher-Dimensional Algebra V: 2-Groups&rdquo;. Version
-3. In: <em>Theory and Applications of Categories</em> 12 (2004), pp.
-423-491. arXiv:
+<p><a name=bib-baezarticle></a><a href="#cite-baezarticle">[BL04]</a> J. C. Baez and
+A. D. Lauda. &ldquo;Higher-Dimensional Algebra V: 2-Groups&rdquo;. Version 3. In:
+<em>Theory and Applications of Categories</em> 12 (2004), pp. 423-491. arXiv:
 <a href="https://arxiv.org/abs/math/0307200v3">math/0307200v3</a>.</p>
 
-<p><a name=bib-baezonline></a><a href="#cite-baezonline">[BL04]</a> J. C. Baez
-and A. D. Lauda. <em>Higher-Dimensional Algebra V: 2-Groups</em>. Oct.
-27, 2004. arXiv:
-<a href="https://arxiv.org/abs/math/0307200v3">math/0307200v3</a>.</p>
+<p><a name=bib-baezonline></a><a href="#cite-baezonline">[BL04]</a> J. C. Baez and A.
+D. Lauda. <em>Higher-Dimensional Algebra V: 2-Groups</em>. Oct. 27, 2004.
+arXiv: <a href="https://arxiv.org/abs/math/0307200v3">math/0307200v3</a>.</p>
 
-<p><a name=bib-chiu></a><a href="#cite-chiu">[CC78]</a> W. W. Chiu and W. M.
-Chow. <em>A Hybrid Hierarchical Model of a Multiple Virtual Storage
-(MVS) Operating System</em>. Research rep. RC-6947. IBM, 1978.</p>
+<p><a name=bib-chiu></a><a href="#cite-chiu">[CC78]</a> W. W. Chiu and W. M. Chow. <em>A
+Hybrid Hierarchical Model of a Multiple Virtual Storage (MVS) Operating
+System</em>. Research rep. RC-6947. IBM, 1978.</p>
 
-<p><a name=bib-ctan></a><a href="#cite-ctan">[CTAN06]</a> <em>CTAN. The
-Comprehensive TeX Archive Network</em>. 2006. URL:
-<a href="https://www.ctan.org">https://www.ctan.org</a> (visited on
-10/01/2006).</p>
+<p><a name=bib-ctan></a><a href="#cite-ctan">[CTAN06]</a> <em>CTAN. The Comprehensive
+TeX Archive Network</em>. 2006. URL:
+<a href="https://www.ctan.org">https://www.ctan.org</a> (visited on 10/01/2006).</p>
 
-<p>[Gee85] I. de Geer. &ldquo;Earl, Saint, Bishop, Skald~- and Music. The
-Orkney Earldom of the Twelfth Century. A Musicological Study&rdquo;. PhD
-thesis. Uppsala: Uppsala Universitet, 1985.</p>
+<p>[Gee85] I. de Geer. &ldquo;Earl, Saint, Bishop, Skald~- and Music. The Orkney
+Earldom of the Twelfth Century. A Musicological Study&rdquo;. PhD thesis.
+Uppsala: Uppsala Universitet, 1985.</p>
 
-<p><a name=bib-herrmann></a><a href="#cite-herrmann">[Her+06]</a> W. A.
-Herrmann, K. Ã–fele, S. K. Schneider, et al. &ldquo;A carbocyclic
-carbene as an efficient catalyst ligand for C-C coupling
-reactions&rdquo;. In: <em>Angew.~Chem. Int.~Ed.</em> 45.23 (2006), pp.
-3859-3862.</p>
+<p><a name=bib-herrmann></a><a href="#cite-herrmann">[Her+06]</a> W. A. Herrmann, K.
+Ã–fele, S. K. Schneider, et al. &ldquo;A carbocyclic carbene as an efficient
+catalyst ligand for C-C coupling reactions&rdquo;. In: <em>Angew.~Chem.
+Int.~Ed.</em> 45.23 (2006), pp. 3859-3862.</p>
 
 <p><a name=bib-itzhaki></a><a href="#cite-itzhaki">[Itz96]</a> N. Itzhaki. <em>Some
-remarks on &#39;t Hooft&#39;s S-matrix for black holes</em>. Mar. 11, 1996.
-arXiv: <a href="https://arxiv.org/abs/hep-th/9603067">hep-th/9603067</a>.</p>
+remarks on &#39;t Hooft&#39;s S-matrix for black holes</em>. Mar. 11, 1996. arXiv:
+<a href="https://arxiv.org/abs/hep-th/9603067">hep-th/9603067</a>.</p>
 
-<p><a name=bib-markey></a><a href="#cite-markey">[Mar05]</a> N. Markey. <em>Tame
-the BeaST. The B to X of BibTeX</em>. Oct. 16, 2005. URL:
+<p><a name=bib-markey></a><a href="#cite-markey">[Mar05]</a> N. Markey. <em>Tame the
+BeaST. The B to X of BibTeX</em>. Oct. 16, 2005. URL:
 <a href="http://tug.ctan.org/tex-archive/info/bibtex/tamethebeast/ttb_en.pdf">http://tug.ctan.org/tex-archive/info/bibtex/tamethebeast/ttb_en.pdf</a>
 (visited on 10/01/2006).</p>
 
-<p><a name=bib-padhye></a><a href="#cite-padhye">[PFT99]</a> J. Padhye, V.
-Firoiu, and D. Towsley. <em>A Stochastic Model of TCP Reno Congestion
-Avoidance and Control</em>. Tech. rep. 99-02. Amherst, Mass.:
-University of Massachusetts, 1999.</p>
+<p><a name=bib-padhye></a><a href="#cite-padhye">[PFT99]</a> J. Padhye, V. Firoiu,
+and D. Towsley. <em>A Stochastic Model of TCP Reno Congestion Avoidance
+and Control</em>. Tech. rep. 99-02. Amherst, Mass.: University of
+Massachusetts, 1999.</p>
 
-<p><a name=bib-wassenberg></a><a href="#cite-wassenberg">[WS10]</a> J.
-Wassenberg and P. Sanders. <em>Faster Radix Sort via Virtual Memory
-and Write-Combining</em>. Aug. 17, 2010. arXiv: <a href="https://arxiv.org/abs/1008.2849v1">1008.2849v1
+<p><a name=bib-wassenberg></a><a href="#cite-wassenberg">[WS10]</a> J. Wassenberg and
+P. Sanders. <em>Faster Radix Sort via Virtual Memory and Write-Combining</em>.
+Aug. 17, 2010. arXiv: <a href="https://arxiv.org/abs/1008.2849v1">1008.2849v1
 [cs.DS]</a>.</p>
 
 </body>

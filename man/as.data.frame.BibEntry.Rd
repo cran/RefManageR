@@ -4,8 +4,7 @@
 \alias{as.data.frame.BibEntry}
 \title{Coerce to a Data Frame}
 \usage{
-\method{as.data.frame}{BibEntry}(x, row.names = NULL, optional = FALSE,
-  ...)
+\method{as.data.frame}{BibEntry}(x, row.names = NULL, optional = FALSE, ...)
 }
 \arguments{
 \item{x}{- a BibEntry object}
