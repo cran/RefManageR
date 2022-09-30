@@ -59,7 +59,7 @@ MatchName <- function(nom, pattern, match.author=.BibOptions$match.author,
       return(all(vapply(pattern, function(pat) any(grepl(pat, x = nom,
                                                          fixed = !regx,
                                                          ignore.case = ign.case,
-                                                         useBytes = TRUE)),
+                                                         useBytes = FALSE)),
                         FALSE)))
   }
 }
@@ -96,68 +96,64 @@ MatchName <- function(nom, pattern, match.author=.BibOptions$match.author,
 #' @family operators
 #' @rdname SearchBib
 #' @examples
-#' if (requireNamespace("bibtex")) {
-#'     file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
-#'     bib <- suppressMessages(ReadBib(file.name))
+#' file.name <- system.file("Bib", "biblatexExamples.bib", package="RefManageR")
+#' bib <- suppressMessages(ReadBib(file.name))
 #'
-#'     ## author search, default is to use family names only for matching
-#'     bib[author = "aristotle"]
+#' ## author search, default is to use family names only for matching
+#' bib[author = "aristotle"]
 #'
-#'     ## Aristotle references before 1925
-#'     bib[author="aristotle", date = "/1925"]
+#' ## Aristotle references before 1925
+#' bib[author="aristotle", date = "/1925"]
 #'
-#'     ## Aristotle references before 1925 *OR* references with editor Westfahl
-#'     bib[list(author="aristotle", date = "/1925"),list(editor = "westfahl")]
+#' ## Aristotle references before 1925 *OR* references with editor Westfahl
+#' bib[list(author="aristotle", date = "/1925"),list(editor = "westfahl")]
 #'
-#'     ## Change some searching and printing options and search for author
-#'     old.opts <- BibOptions(bib.style = "authoryear", match.author = "exact",
-#'       max.names = 99, first.inits = FALSE)
-#'     bib[author="Mart\u00edn, Jacinto and S\u00e1nchez, Alberto"]
-#'     BibOptions(old.opts)  ## reset options
+#' ## Change some searching and printing options and search for author
+#' old.opts <- BibOptions(bib.style = "authoryear", match.author = "exact",
+#'                        max.names = 99, first.inits = FALSE)
+#' bib[author="Mart\u00edn, Jacinto and S\u00e1nchez, Alberto"]
+#' BibOptions(old.opts)  ## reset options
 #'
-#'     ## Some works of Raymond J. Carroll's
-#'     file.name <- system.file("Bib", "RJC.bib", package="RefManageR")
-#'     bib <- ReadBib(file.name)
-#'     length(bib)
-#'
-#'     ## index by key
-#'     bib[c("chen2013using", "carroll1978distributions")]
-#'
-#'     ## Papers with someone with family name Wang
-#'     length(SearchBib(bib, author='Wang', .opts = list(match.author = "family")))
-#'
-#'     ## Papers with Wang, N.
-#'     length(SearchBib(bib, author='Wang, N.', .opts = list(match.author = "family.with.initials")))
-#'
-#'     ## tech reports with Ruppert
-#'     length(bib[author='ruppert',bibtype="report"])
-#'
-#'     ##Carroll and Ruppert tech reports at UNC
-#'     length(bib[author='ruppert',bibtype="report",institution="north carolina"])
-#'
-#'     ## Carroll and Ruppert papers since leaving UNC
-#'     length(SearchBib(bib, author='ruppert', date="1987-07/",
-#'        .opts = list(match.date = "exact")))
-#' }
-#'
-#' ## Carroll and Ruppert papers NOT in the 1990's
 #' \dontrun{
-#' if (requireNamespace("bibtex")) {
-#'     length(SearchBib(bib, author='ruppert', date = "!1990/1999"))
-#'     identical(SearchBib(bib, author='ruppert', date = "!1990/1999"),
-#'       SearchBib(bib, author='ruppert', year = "!1990/1999"))
-#'     table(unlist(SearchBib(bib, author='ruppert', date="!1990/1999")$year))
+#'   ## Some works of Raymond J. Carroll's
+#'   file.name <- system.file("Bib", "RJC.bib", package="RefManageR")
+#'   bib <- ReadBib(file.name)
+#'   length(bib)
 #'
-#'     ## Carroll + Ruppert + Simpson
-#'     length(bib[author="Carroll, R. J. and Simpson, D. G. and Ruppert, D."])
+#'   ## index by key
+#'   bib[c("chen2013using", "carroll1978distributions")]
 #'
-#'     ## Carroll + Ruppert OR Carroll + Simpson
-#'     length(bib[author=c("Carroll, R. J. and Ruppert, D.", "Carroll, R. J. and Simpson, D. G.")])
+#'   ## Papers with someone with family name Wang
+#'   length(SearchBib(bib, author='Wang', .opts = list(match.author = "family")))
 #'
-#'     ## Carroll + Ruppert tech reports at UNC "OR" Carroll and Ruppert JASA papers
-#'     length(bib[list(author='ruppert',bibtype="report",institution="north carolina"),
-#'       list(author="ruppert",journal="journal of the american statistical association")])
-#' }
+#'   ## Papers with Wang, N.
+#'   length(SearchBib(bib, author='Wang, N.', .opts = list(match.author = "family.with.initials")))
+#'
+#'   ## tech reports with Ruppert
+#'   length(bib[author='ruppert',bibtype="report"])
+#'
+#'   ##Carroll and Ruppert tech reports at UNC
+#'   length(bib[author='ruppert',bibtype="report",institution="north carolina"])
+#'
+#'   ## Carroll and Ruppert papers since leaving UNC
+#'   length(SearchBib(bib, author='ruppert', date="1987-07/",
+#'                    .opts = list(match.date = "exact")))
+#'
+#'   ## Carroll and Ruppert papers NOT in the 1990's
+#'  length(SearchBib(bib, author='ruppert', date = "!1990/1999"))
+#'  identical(SearchBib(bib, author='ruppert', date = "!1990/1999"),
+#'           SearchBib(bib, author='ruppert', year = "!1990/1999"))
+#'  table(unlist(SearchBib(bib, author='ruppert', date="!1990/1999")$year))
+#'
+#'  ## Carroll + Ruppert + Simpson
+#'  length(bib[author="Carroll, R. J. and Simpson, D. G. and Ruppert, D."])
+#'
+#'  ## Carroll + Ruppert OR Carroll + Simpson
+#'  length(bib[author=c("Carroll, R. J. and Ruppert, D.", "Carroll, R. J. and Simpson, D. G.")])
+#'
+#'  ## Carroll + Ruppert tech reports at UNC "OR" Carroll and Ruppert JASA papers
+#'  length(bib[list(author='ruppert',bibtype="report",institution="north carolina"),
+#'             list(author="ruppert",journal="journal of the american statistical association")])
 #' }
 `[.BibEntry` <- function(x, i, j, ..., drop = FALSE){
 
@@ -323,16 +319,16 @@ FindBibEntry <- function(bib, term, field){
     res <- logical(length(bib))
     not.nulls <- which(!vapply(vals, is.null, FALSE))
     vals <- gsub('\\n[[:space:]]*', ' ', unlist(vals[not.nulls]),
-                 useBytes = TRUE)
+                 useBytes = FALSE)
     vals <- unlist(strsplit(cleanupLatexSearch(vals), '\n') )
 
     if (!usereg && ignorec){
         res[not.nulls[grepl(tolower(term), tolower(vals), fixed = TRUE,
-                            useBytes = TRUE)]] <- TRUE
+                            useBytes = FALSE)]] <- TRUE
     }else{
         res[not.nulls[grepl(term, vals, fixed = !.BibOptions$use.regex,
                             ignore.case = .BibOptions$ignore.case,
-                            useBytes = TRUE)]] <- TRUE
+                            useBytes = FALSE)]] <- TRUE
     }
   }
   res
@@ -342,13 +338,13 @@ FindBibEntry <- function(bib, term, field){
 cleanupLatexSearch <- function (x){
   if (!length(x))
     return(x)
-  if (any(grepl('mkbib', x, useBytes = TRUE))){
-    x <- gsub('\\\\mkbibquote[{]([^}]+)[}]', "\\1", x, useBytes = TRUE)
-    x <- gsub('\\\\mkbibemph[{]([^}]+)[}]', "\\1", x, useBytes = TRUE)
-    x <- gsub('\\\\mkbibbold[{]([^}]+)[}]', "\\1", x, useBytes = TRUE)
+  if (any(grepl('mkbib', x, useBytes = FALSE))){
+    x <- gsub('\\\\mkbibquote[{]([^}]+)[}]', "\\1", x, useBytes = FALSE)
+    x <- gsub('\\\\mkbibemph[{]([^}]+)[}]', "\\1", x, useBytes = FALSE)
+    x <- gsub('\\\\mkbibbold[{]([^}]+)[}]', "\\1", x, useBytes = FALSE)
   }
-  x <- gsub('\\\\hyphen', '-', x, useBytes = TRUE)
-  x <- gsub("\\\\textquotesingle", "'", x, useBytes = TRUE)
+  x <- gsub('\\\\hyphen', '-', x, useBytes = FALSE)
+  x <- gsub("\\\\textquotesingle", "'", x, useBytes = FALSE)
 
   latex <- try(tools::parseLatex(x), silent = TRUE)
   if (inherits(latex, "try-error")) {
@@ -363,15 +359,15 @@ cleanupLatexSearch <- function (x){
                     latex
                 })
     x <- tools::deparseLatex(latex, dropBraces = TRUE)
-    if (grepl("\\\\[[:punct:]]", x, useBytes = TRUE)){
-      x <- gsub("\\\\'I", '\u00cd', x, useBytes = TRUE)
-      x <- gsub("\\\\'i", '\u00ed', x, useBytes = TRUE)
-      x <- gsub('\\\\"I', '\u00cf', x, useBytes = TRUE)
-      x <- gsub('\\\\"i', '\u00ef', x, useBytes = TRUE)
-      x <- gsub("\\\\\\^I", '\u00ce', x, useBytes = TRUE)
-      x <- gsub("\\\\\\^i", '\u00ee', x, useBytes = TRUE)
-      x <- gsub("\\\\`I", '\u00cc', x, useBytes = TRUE)
-      x <- gsub("\\\\`i", '\u00ec', x, useBytes = TRUE)
+    if (grepl("\\\\[[:punct:]]", x, useBytes = FALSE)){
+      x <- gsub("\\\\'I", '\u00cd', x, useBytes = FALSE)
+      x <- gsub("\\\\'i", '\u00ed', x, useBytes = FALSE)
+      x <- gsub('\\\\"I', '\u00cf', x, useBytes = FALSE)
+      x <- gsub('\\\\"i', '\u00ef', x, useBytes = FALSE)
+      x <- gsub("\\\\\\^I", '\u00ce', x, useBytes = FALSE)
+      x <- gsub("\\\\\\^i", '\u00ee', x, useBytes = FALSE)
+      x <- gsub("\\\\`I", '\u00cc', x, useBytes = FALSE)
+      x <- gsub("\\\\`i", '\u00ec', x, useBytes = FALSE)
       Encoding(x) <- 'UTF-8'
     }
     x

@@ -10,7 +10,7 @@
 #' @return an object of class BibEntry.
 #' @export
 #' @details
-#' The bibliographic information returned by the search of the \url{https://doi.org/}
+#' The bibliographic information returned by the search of the \url{https://www.doi.org/}
 #' API is temporarily
 #' written to a file and then read back into \code{R} and return as a
 #' \code{BibEntry} object.
@@ -19,7 +19,7 @@
 #' @importFrom utils URLdecode
 #' @seealso \code{\link{ReadCrossRef}}, \code{\link{BibEntry}}
 #' @examples
-#' if (interactive() && !httr::http_error("https://doi.org/"))
+#' if (interactive() && !httr::http_error("https://www.doi.org/"))
 #'   GetBibEntryWithDOI(c("10.1016/j.iheduc.2003.11.004", "10.3998/3336451.0004.203"))
 GetBibEntryWithDOI <- function(doi, temp.file=tempfile(fileext = '.bib'),
                                delete.file = TRUE){
@@ -38,9 +38,10 @@ GetBibEntryWithDOI <- function(doi, temp.file=tempfile(fileext = '.bib'),
   for (i in seq_along(doi)){
     temp <- GET(modify_url('https://doi.org/', path = doi[i]),
                     config = list(followlocation = TRUE),
-                      add_headers(Accept = "application/x-bibtex"))
+                add_headers(Accept = "application/x-bibtex",
+                "User-Agent" = "mailto:mathew.w.mclean@gmail.com"))
     if (!http_error(temp)){
-      temp <- content(temp, as = "text", encoding = "UTF-8")
+      temp <- content(temp, as = "text")  # encoding = "UTF-8")
       successes[i] <- TRUE
       ## if (is.raw(temp))
       ##   temp <- rawToChar(temp)

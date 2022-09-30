@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Add Citations to an RMarkdown Document and Print Bibliography</title>
+<title></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -201,13 +201,6 @@ hr {
 </head>
 
 <body>
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{RMarkdown Citations Example}
--->
-
-<h1>Add Citations to an RMarkdown Document and Print Bibliography</h1>
-
 <p>This is an R Markdown document. This is an example of a citation in the text <a name=cite-loh></a><a href="#bib-loh">Loh (1992)</a>. Now we cite in parentheses <a name=cite-baezonline></a>(e.g., <a href="https://arxiv.org/abs/math/0307200v3">Baez and Lauda, 2004b</a>).  Notice the useful &#39;b&#39; beside the year in the citation.  You can change the default options in a setup chunk at the start of the document or at any other point using the <code>BibOptions</code> function or by specifying options as a list in the <code>.opts</code> argument to the cite functions.  In this example we mix <code>&quot;authoyear&quot;</code> citation style with <code>&quot;numeric&quot;</code> bibliography style.</p>
 
 <p>Note that I do not only have to cite by key, and may use all the features of the <code>SearchBib</code> function to index into the BibEntry object.  Here are all the entries of type <code>Report</code> in my bibliography <a name=cite-chiu></a><a name=cite-padhye></a><a href="#bib-chiu">Chiu and Chow (1978)</a>; <a href="#bib-padhye">Padhye, Firoiu, and Towsley (1999)</a>.  The hyperlinks will take you to their entry in the bibliography.  The link for <a name=cite-markey></a><a href="http://tug.ctan.org/tex-archive/info/bibtex/tamethebeast/ttb_en.pdf">Markey (2005)</a> will open the document in a new window; this is the default behaviour, if a link is available (see <code>?open.BibEntry</code>). The following citation has no hyperlink (de

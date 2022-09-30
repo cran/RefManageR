@@ -40,8 +40,8 @@ if (inherits(arxiv2.fail, "try-error"))
 biomet.fail <- !file.copy(system.file("pdf", "biometrikaEx.pdf",
                                      package = "RefManageR"), exe.path)
 if (biomet.fail)
-    biomet.fail <- try(download.file(paste0("http://biomet.oxfordjournals.org/",
-                                        "content/83/4/715.full.pdf"),
+    biomet.fail <- try(download.file(paste0("https://stat.uconn.edu/wp-content/",
+                                            "uploads/sites/729/2019/10/83-4-715.pdf"),
                                  destfile = file.path(exe.path, "biometrikaEx.pdf"),
                                  mode = "wb"))
 if (inherits(biomet.fail, "try-error"))
@@ -73,11 +73,9 @@ test_that("Creates a BibEntry object", {
     msgs <- capture_messages(bib <- ReadPDFs(exe.path, progress = TRUE,
                                      use.crossref = TRUE))
     expect_is(bib, "BibEntry")
-    if (!biomet.fail){
-        expect_length(5, 1L)
-        expect_true(grepl("Could not retrieve author info", msgs[4]))
-        expect_true(grepl("biometrikaEx\\.pdf", msgs[5]))
-    }
+    if (!biomet.fail)
+        expect_equal(as.character(bib[["multivariate1996"]]$title),
+                     "The Multivariate Skew-normal Distribution")
 })
 
 test_that("Add file field", {
@@ -105,7 +103,7 @@ test_that("Recognizes JSTOR", {
     bib <- ReadPDFs(exe.path, progress = FALSE, use.crossref = FALSE)
     expect_equal(bib[author = "carrol"]$eprinttype, "jstor")
     expect_equal(bib[author = "carrol"]$url,
-                 "https://www.jstor.org/stable/25050155")
+                 "https://www.jstor.org/stable/24538366")
 })
 
 test_that("Recognizes arxiv", {
@@ -146,7 +144,7 @@ test_that("Reading journal and title", {
     expect_match(bib[year = "1996"]$journal, "Biometrika")
     expect_equal(bib[year = "1996"]$title,
                  "The Multivariate Skew-normal Distribution")
-    expect_equal(bib[year = "1996"]$bibtype, "Article")
+    expect_equal(bib[year = "1996"]$bibtype, "Misc")
 })
 
 test_that("use.metadata = FALSE", {

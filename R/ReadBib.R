@@ -13,6 +13,7 @@
 #' \dQuote{error} means the entry will not be added.  See \code{\link{BibOptions}}.
 #' @author McLean, M. W., based on code in \code{bibtex} package by Francois, R.
 #' @importFrom stringr str_trim
+#' @importFrom bibtex do_read_bib
 #' @note Date fields are parsed using the locale specified by
 #' \code{Sys.getlocale("LC_TIME")}.  To read a bib file with character \sQuote{month}
 #' fields in a language other than the current locale, \code{Sys.setlocale} should be
@@ -23,7 +24,18 @@
 #' @seealso \code{\link[bibtex]{read.bib}} in package \code{bibtex}
 #' @export
 #' @examples
-#' if (requireNamespace("bibtex")) {
+#' bib.text <- "@Manual{mclean2014,
+#'   author = {Mathew William McLean},
+#'   title = {Straightforward Bibliography Management in R Using the RefManager Package},
+#'   note = {arXiv: 1403.2036 [cs.DL]},
+#'   year = {2014},
+#'   url = {https://arxiv.org/abs/1403.2036},
+#' }"
+#' tfile <- tempfile(fileext = ".bib")
+#' writeLines(bib.text, tfile)
+#' ReadBib(tfile)
+#' unlink(tfile)
+#' \dontrun{
 #'     file.name <- system.file("Bib", "RJC.bib", package="RefManageR")
 #'     bib <- ReadBib(file.name)
 #' }
@@ -36,7 +48,7 @@ ReadBib <- function(file, .Encoding = "UTF-8",
               dQuote("bibtex"), " package installed.\nPlease install from ",
               "GitHub using the ", dQuote("remotes"),
               " (or ", dQuote("devtools"), ") package:\n\n",
-              "remotes::install_github(\"ROpenSci/bibtex\")")
+              "remotes::install_github(\"ropensci/bibtex\")")
       return(invisible())
     }
 
@@ -49,10 +61,8 @@ ReadBib <- function(file, .Encoding = "UTF-8",
                     sQuote("ReadBib"), sQuote("file"),
                     "a character vector of length one"))
   }
-  srcfile <- switch(.Encoding, unknown = srcfile(file),
-                    srcfile(file, encoding = .Encoding))
 
-  out <- bibtex::do_read_bib(file, encoding = .Encoding, srcfile)
+  out <- bibtex::do_read_bib(file, encoding = .Encoding)
   at <- attributes(out)
   if (typeof(out) != "integer")
     out <- lapply(out, MakeBibEntry)

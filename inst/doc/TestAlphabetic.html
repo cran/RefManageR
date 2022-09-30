@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Add Citations to an RMarkdown Document and Print Bibliography</title>
+<title></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -201,25 +201,13 @@ hr {
 </head>
 
 <body>
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{RMarkdown Citations - Alphabetic Style}
--->
-
-<h1>Add Citations to an RMarkdown Document and Print Bibliography</h1>
-
 <pre><code class="r">library(RefManageR)
 bib &lt;- ReadBib(system.file(&quot;Bib&quot;, &quot;biblatexExamples.bib&quot;, 
                            package = &quot;RefManageR&quot;), check = FALSE)
+BibOptions(check.entries = FALSE, style = &quot;markdown&quot;, bib.style = &quot;alphabetic&quot;, cite.style = &#39;alphabetic&#39;)
 </code></pre>
 
-<pre><code>## Loading required namespace: bibtex
-</code></pre>
-
-<pre><code class="r">BibOptions(check.entries = FALSE, style = &quot;markdown&quot;, bib.style = &quot;alphabetic&quot;, cite.style = &#39;alphabetic&#39;)
-</code></pre>
-
-<p>This is an R Markdown document. This is an example of a citation in the text <a name=cite-herrmann></a><a href="#bib-herrmann">Herrmann, Ã–fele, Schneider, et al. [Her+06]</a>. Now we cite in parentheses <a name=cite-baezonline></a>[e.g., <a href="https://arxiv.org/abs/math/0307200v3">BL04</a>].  You can change the default options in a setup chunk at the start of the document or at any other point using the <code>BibOptions</code> function or by specifying options as a list in the <code>.opts</code> argument to the cite functions.</p>
+<p>This is an R Markdown document. This is an example of a citation in the text <a name=cite-herrmann></a><a href="#bib-herrmann">Herrmann, Öfele, Schneider et al. [Her+06]</a>. Now we cite in parentheses <a name=cite-baezonline></a>[e.g., <a href="https://arxiv.org/abs/math/0307200v3">BL04</a>].  You can change the default options in a setup chunk at the start of the document or at any other point using the <code>BibOptions</code> function or by specifying options as a list in the <code>.opts</code> argument to the cite functions.</p>
 
 <p>These are reports <a name=cite-chiu></a><a name=cite-padhye></a><a href="#bib-chiu">Chiu and Chow [CC78]</a>; <a href="#bib-padhye">Padhye, Firoiu, and Towsley [PFT99]</a>.  Their hyperlinks go to their entry in the bibliography.
 The link for <a name=cite-markey></a>[<a href="http://tug.ctan.org/tex-archive/info/bibtex/tamethebeast/ttb_en.pdf">Mar05</a>] will take you to the document in a new window; this is the default behaviour, if a link is available (see <code>?open.BibEntry</code>). The following citation has no hyperlink [Gee85].  You can also embed plots, for example: </p>
@@ -278,7 +266,7 @@ Earldom of the Twelfth Century. A Musicological Study&rdquo;. PhD thesis.
 Uppsala: Uppsala Universitet, 1985.</p>
 
 <p><a name=bib-herrmann></a><a href="#cite-herrmann">[Her+06]</a> W. A. Herrmann, K.
-Ã–fele, S. K. Schneider, et al. &ldquo;A carbocyclic carbene as an efficient
+Öfele, S. K. Schneider, et al. &ldquo;A carbocyclic carbene as an efficient
 catalyst ligand for C-C coupling reactions&rdquo;. In: <em>Angew.~Chem.
 Int.~Ed.</em> 45.23 (2006), pp. 3859-3862.</p>
 

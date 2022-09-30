@@ -167,7 +167,7 @@ Cite <- function(bib, ..., textual = FALSE, before = NULL, after = NULL,
                                                    longnamesfirst)){
                 authors <- authors[seq_len(max.names)]
                 authors[length(authors)] <- paste0(authors[length(authors)],
-                                                   ", et al.")
+                                                   " et al.")
               }else{
                 if (length(authors) > 1L)
                   authors[length(authors)] <- paste("and",
@@ -259,7 +259,7 @@ MakeCiteHyperlink <- function(result, papers, hyperlink, keys, auth,
     url <- switch(hyperlink, to.bib = paste0("#bib-",
                                              gsub("[^_a-zA-Z0-9-]", "",
                                                   keys,
-                                                  useBytes = TRUE)),
+                                                  useBytes = FALSE)),
                to.doc = vapply(papers, GetURL, "",
                                flds = c("url", "eprint", "doi"),
                                to.bib = TRUE),
@@ -268,7 +268,7 @@ MakeCiteHyperlink <- function(result, papers, hyperlink, keys, auth,
       new.links <- if (any(first))
                        paste(paste("<a id='cite-", gsub("[^_a-zA-Z0-9-]",
                                                         "", keys[first],
-                                                        useBytes = TRUE),
+                                                        useBytes = FALSE),
                                    "'></a>", sep = ""), collapse = "")
                    else ""
       result <- if (numeric && super && textual)
@@ -279,7 +279,7 @@ MakeCiteHyperlink <- function(result, papers, hyperlink, keys, auth,
       new.links <- if(any(first))
                        paste(paste("<a name=cite-",
                                    gsub("[^_a-zA-Z0-9-]", "",
-                                        keys[first], useBytes = TRUE),
+                                        keys[first], useBytes = FALSE),
                                    "></a>", sep = ""), collapse = "")
       else ""
       result <- if (numeric && super && textual)
